@@ -8,23 +8,23 @@ module FieldTypes
       private
 
       def value
-        if @model[:data].blank?
+        if @options[:data].blank?
           false
         else
-          @model[:data]["values"].include?(node_id) ? true : false
+          @options[:data]["values"].include?(node_id) ? true : false
         end
       end
 
       def node_id
-        @model[:node]['id'].to_s
+        @options[:node]['id'].to_s
       end
 
       def child_identifier
-        @model[:child].to_s + " " + "->"
+        @options[:child].to_s + " " + "->"
       end
 
       def display_lineage
-        @model[:child].to_s + " " + @model[:node]["node"]["name"]
+        @options[:child].to_s + " " + @options[:node]["node"]["name"]
       end
     end
   end
