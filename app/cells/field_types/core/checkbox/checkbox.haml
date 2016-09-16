@@ -1,7 +1,7 @@
-%label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect{ for: @model[:node]["id"] }
-  = @model[:form].check_box "data[values][#{@model[:node]['id']}]", { checked: value, class: 'mdl-checkbox__input', id: @model[:node]["id"] }, 1, nil
-  = @model[:form].label :data, display_lineage, class: 'mdl-checkbox__label'
+%label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect{ for: @options[:node]["id"] }
+  = context[:form].check_box "data[values][#{@options[:node]['id']}]", { checked: value, class: 'mdl-checkbox__input', id: @options[:node]["id"] }, 1, nil
+  = context[:form].label :data, display_lineage, class: 'mdl-checkbox__label'
 
-- if @model[:node]["children"].any?
-  - @model[:node]["children"].each do |child|
-    = cell(FieldTypes::Core::CheckboxCell, node: child, form: @model[:form], child: child_identifier, data: @model[:data]).(:checkbox)
+- if @options[:node]["children"].any?
+  - @options[:node]["children"].each do |child|
+    = cell(FieldTypes::Core::CheckboxCell, nil, node: child, child: child_identifier, data: @options[:data]).(:checkbox)
