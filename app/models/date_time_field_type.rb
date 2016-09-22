@@ -42,12 +42,16 @@ class DateTimeFieldType < FieldType
   end
 
   def timestamp_is_allowed?
-    begin
-      DateTime.parse(@timestamp)
+    if @timestamp.nil?
       true
-    rescue ArgumentError
-      errors.add(:timestamp, 'must be a valid date')
-      false
+    else
+      begin
+        DateTime.parse(@timestamp)
+        true
+      rescue ArgumentError
+        errors.add(:timestamp, 'must be a valid date')
+        false
+      end
     end
   end
 
