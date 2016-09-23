@@ -7,7 +7,7 @@ class DateTimeFieldType < FieldType
   attr_reader :validations, :metadata
 
   validates :timestamp, presence: true, if: :validate_presence?
-  validate :timestamp_is_allowed?
+  validate :timestamp_is_valid?
 
   def validations=(validations_hash)
     @validations = validations_hash.deep_symbolize_keys
@@ -41,13 +41,17 @@ class DateTimeFieldType < FieldType
     "#{field_name.parameterize('_')}_date_time"
   end
 
-  def timestamp_is_allowed?
-    begin
-      DateTime.parse(@timestamp)
+  def timestamp_is_valid?
+    if @timestamp.nil?
       true
-    rescue ArgumentError
-      errors.add(:timestamp, 'must be a valid date')
-      false
+    else
+      begin
+        DateTime.parse(@timestamp)
+        true
+      rescue ArgumentError
+        errors.add(:timestamp, 'must be a valid date')
+        false
+      end
     end
   end
 
