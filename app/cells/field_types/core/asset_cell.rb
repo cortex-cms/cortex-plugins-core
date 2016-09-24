@@ -1,11 +1,21 @@
 module FieldTypes
   module Core
     class AssetCell < FieldTypes::Core::Cell
+      include UtilityHelper
+
       def input
         render
       end
 
       private
+
+      def input_classes
+        @options[:input_options]&.[](:display)&.[](:classes)
+      end
+
+      def input_styles
+        cssify(@options[:input_options]&.[](:display)&.[](:styles))
+      end
 
       def render_label
         @options[:form].label 'data[asset]', field.name

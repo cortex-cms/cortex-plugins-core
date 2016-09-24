@@ -5,11 +5,23 @@ module FieldTypes
         render
       end
 
+      def wysiwyg
+        render
+      end
+
       def multiline_input
         render
       end
 
       private
+
+      def input_classes
+        @options[:input_options]&.[](:display)&.[](:classes)
+      end
+
+      def input_styles
+        @options[:input_options]&.[](:display)&.[](:styles)
+      end
 
       def value
         data&.[]('text') || @options[:default_value]
@@ -27,6 +39,10 @@ module FieldTypes
 
       def render_input
         @options[:form].text_field 'data[text]', value: value, placeholder: @options[:placeholder], class: 'mdl-textfield__input'
+      end
+
+      def render_wysiwyg
+        @options[:form].cktext_area 'data[text]', value: value, class: input_classes, ckeditor: input_styles
       end
 
       def render_multiline_input
