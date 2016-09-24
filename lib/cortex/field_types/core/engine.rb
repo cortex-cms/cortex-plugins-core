@@ -1,3 +1,5 @@
+require 'ckeditor'
+
 module Cortex
   module FieldTypes
     module Core
