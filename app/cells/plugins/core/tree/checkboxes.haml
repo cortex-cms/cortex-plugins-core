@@ -3,4 +3,4 @@
   
 - @options[:metadata]["data"]["tree_array"].each do |node|
   = render_field_id
-  = cell(FieldTypes::Core::CheckboxCell, nil, node: node, data: data).(:checkbox)
+  = cell(Plugins::Core::CheckboxCell, nil, node: node, data: data).(:checkbox)

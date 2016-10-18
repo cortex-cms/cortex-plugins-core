@@ -1,4 +1,4 @@
-class FieldCell < FieldTypes::Core::Cell::ViewModel
+class FieldCell < Plugins::Core::Cell::ViewModel
   self.view_paths << 'lib'
 
   property :field
