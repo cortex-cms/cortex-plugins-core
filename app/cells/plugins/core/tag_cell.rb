@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class TagCell < FieldTypes::Core::Cell
+    class TagCell < Plugins::Core::Cell
       def tag_picker
         render
       end

@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class AssetCell < FieldTypes::Core::Cell
+    class AssetCell < Plugins::Core::Cell
       include UtilityHelper
 
       def input

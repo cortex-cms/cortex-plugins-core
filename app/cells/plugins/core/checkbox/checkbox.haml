@@ -4,4 +4,4 @@
 
 - if @options[:node]["children"].any?
   - @options[:node]["children"].each do |child|
-    = cell(FieldTypes::Core::CheckboxCell, nil, node: child, child: child_identifier, data: @options[:data]).(:checkbox)
+    = cell(Plugins::Core::CheckboxCell, nil, node: child, child: child_identifier, data: @options[:data]).(:checkbox)

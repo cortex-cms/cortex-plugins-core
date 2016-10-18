@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class UserCell < FieldTypes::Core::Cell
+    class UserCell < Plugins::Core::Cell
       def dropdown
         render
       end

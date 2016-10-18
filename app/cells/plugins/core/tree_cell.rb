@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class TreeCell < FieldTypes::Core::Cell
+    class TreeCell < Plugins::Core::Cell
       def checkboxes
         render
       end

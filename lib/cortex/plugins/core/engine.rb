@@ -1,7 +1,7 @@
 require 'ckeditor'
 
 module Cortex
-  module FieldTypes
+  module Plugins
     module Core
       class Engine < ::Rails::Engine
       end

@@ -3,7 +3,7 @@ require_relative 'boot'
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require "cortex/field_types/core"
+require "cortex/plugins/core"
 
 module Dummy
   class Application < Rails::Application
