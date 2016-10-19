@@ -54,7 +54,11 @@ namespace :cortex do
                       "id": media.fields[1].id
                     },
                     {
-                      "id": media.fields[2].id
+                      "id": media.fields[2].id,
+                      "render_method": "multiline_input",
+                      "display": {
+                         "rows": 3
+                      }
                     },
                     {
                       "id": media.fields[3].id
