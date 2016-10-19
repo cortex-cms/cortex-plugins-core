@@ -42,7 +42,7 @@ class DateTimeFieldType < FieldType
   end
 
   def timestamp_is_valid?
-    if @timestamp.nil?
+    if @timestamp.blank? || @timestamp.nil?
       true
     else
       begin
