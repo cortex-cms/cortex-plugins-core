@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class DateTimeCell < FieldTypes::Core::Cell
+    class DateTimeCell < Plugins::Core::Cell
       def datepicker
         render
       end

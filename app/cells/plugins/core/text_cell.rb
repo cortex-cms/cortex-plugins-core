@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class TextCell < FieldTypes::Core::Cell
+    class TextCell < Plugins::Core::Cell
       def input
         render
       end

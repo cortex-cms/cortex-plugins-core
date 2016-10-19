@@ -1,6 +1,6 @@
-module FieldTypes
+module Plugins
   module Core
-    class BooleanCell < FieldTypes::Core::Cell
+    class BooleanCell < Plugins::Core::Cell
       def checkbox
         render
       end
