@@ -46,7 +46,7 @@ namespace :cortex do
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
         media.fields.new(name: 'Tags', field_type: 'tag_field_type')
         media.fields.new(name: 'Expiration Date', field_type: 'date_time_field_type')
-        media.fields.new(name: 'Alt Tag', field_type: 'text_field_type', order_position: 6)
+        media.fields.new(name: 'Alt Tag', field_type: 'text_field_type')
         media.save
 
         puts "Creating Wizard Decorators..."
