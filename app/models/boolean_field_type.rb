@@ -1,17 +1,8 @@
 class BooleanFieldType < FieldType
-  attr_accessor :data, :value, :field_name
-  attr_reader :validations, :metadata
-
-  def validations=(validations_hash)
-    @validations = {}
-  end
+  attr_accessor :value
 
   def data=(data_hash)
     @value = data_hash.deep_symbolize_keys[:value]
-  end
-
-  def metadata=(metadata_hash)
-    @metadata = metadata_hash.deep_symbolize_keys
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
@@ -22,10 +13,6 @@ class BooleanFieldType < FieldType
 
   def mapping
     { name: mapping_field_name, type: :string, analyzer: :snowball }
-  end
-
-  def acceptable_validations?
-    true
   end
 
   private

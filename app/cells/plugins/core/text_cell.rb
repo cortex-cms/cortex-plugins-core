@@ -15,14 +15,18 @@ module Plugins
 
       private
 
+      def input_display
+        @options[:input_options]&.[](:display)
+      end
+
       def input_classes
-        @options[:input_options]&.[](:display)&.[](:classes)
+        input_display&.[](:classes)
       end
 
       def input_styles
-        @options[:input_options]&.[](:display)&.[](:styles)
+        input_display&.[](:styles)
       end
-
+      
       def value
         data&.[]('text') || @options[:default_value]
       end
@@ -46,7 +50,7 @@ module Plugins
       end
 
       def render_multiline_input
-        @options[:form].text_area_tag 'data[text]', value: value # , cols: @options[:cols], rows: @options[:rows]
+        @options[:form].text_area 'data[text]', value: value , placeholder: @options[:placeholder], rows: input_display&.[](:rows) , class: 'mdl-textfield__input'
       end
     end
   end

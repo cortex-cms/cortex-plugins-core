@@ -1,26 +1,22 @@
 class AssetFieldType < FieldType
-  VALIDATION_TYPES = {
-      presence: :valid_presence_validation?,
-      size: :valid_size_validation?,
-      content_type: :valid_content_type_validation?
-  }.freeze
-
   attr_accessor :asset_file_name,
                 :asset_content_type,
                 :asset_file_size,
                 :asset_updated_at,
-                :field_name
+                :asset
 
-  attr_reader :data, :validations, :dimensions
+  attr_reader :dimensions
 
-  has_attached_file :asset
-  do_not_validate_attachment_file_type :asset
   before_save :extract_dimensions
 
+  do_not_validate_attachment_file_type :asset
   validates :asset, attachment_presence: true, if: :validate_presence?
+  validate :validate_asset_size, if: :validate_size?
+  validate :validate_asset_content_type, if: :validate_content_type?
 
-  def validations=(validations_hash)
-    @validations = validations_hash.deep_symbolize_keys
+  def metadata=(metadata_hash)
+    @metadata = metadata_hash.deep_symbolize_keys
+    Paperclip::HasAttachedFile.define_on(self.class, :asset, metadata)
   end
 
   def data=(data_hash)
@@ -38,10 +34,6 @@ class AssetFieldType < FieldType
             'updated_at': asset_updated_at
         }
     }
-  end
-
-  def acceptable_validations?
-    valid_types? && valid_options?
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
@@ -72,43 +64,53 @@ class AssetFieldType < FieldType
     end
   end
 
+  def allowed_content_types
+    validations[:allowed_extensions].collect do |allowed_content_type|
+      MimeMagic.by_extension(allowed_content_type).type
+    end
+  end
+
   def mapping_field_name
     "#{field_name.parameterize('_')}_asset_file_name"
-  end
-
-  def valid_types?
-    validations.all? do |type, options|
-      VALIDATION_TYPES.include?(type.to_sym)
-    end
-  end
-
-  def valid_options?
-    validations.all? do |type, options|
-      self.send(VALIDATION_TYPES[type])
-    end
   end
 
   def validate_presence?
     @validations.key? :presence
   end
 
+  def attachment_size_validator
+    AttachmentSizeValidator.new(validations[:size].merge(attributes: :asset))
+  end
+
+  def attachment_content_type_validator
+    AttachmentContentTypeValidator.new({content_type: allowed_content_types}.merge(attributes: :asset))
+  end
+
   alias_method :valid_presence_validation?, :validate_presence?
 
-  def valid_size_validation?
+  def validate_size?
     begin
-      AttachmentSizeValidator.new(validations[:size].merge(attributes: :asset))
+      attachment_size_validator
       true
     rescue ArgumentError, NoMethodError
       false
     end
   end
 
-  def valid_content_type_validation?
+  def validate_content_type?
     begin
-      AttachmentContentTypeValidator.new(validations[:content_type].merge(attributes: :asset))
+      attachment_content_type_validator
       true
     rescue ArgumentError, NoMethodError
       false
     end
+  end
+
+  def validate_asset_size
+    attachment_size_validator.validate_each(self, :asset, asset)
+  end
+
+  def validate_asset_content_type
+    attachment_content_type_validator.validate_each(self, :asset, asset)
   end
 end
