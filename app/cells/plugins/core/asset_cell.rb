@@ -1,6 +1,7 @@
 module Plugins
   module Core
     class AssetCell < Plugins::Core::Cell
+      include ActionView::Helpers::NumberHelper
       include UtilityHelper
 
       def input
@@ -8,6 +9,14 @@ module Plugins
       end
 
       private
+
+      def render_allowed_asset_extensions
+        field.validations['allowed_extensions']&.join(', ')
+      end
+
+      def render_max_asset_size
+        number_to_human_size(field.validations['size']&.[]('less_than'))
+      end
 
       def input_classes
         @options[:input_options]&.[](:display)&.[](:classes)

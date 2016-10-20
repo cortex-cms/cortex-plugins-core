@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "cells", "~> 4.1"
   s.add_dependency "cells-rails", "~> 0.0.6"
   s.add_dependency "cells-haml", "~> 0.0.10"
+  s.add_dependency "mimemagic", "~> 0.3.2"
   s.add_dependency "ckeditor", "~> 4.2.0"
 
   s.add_development_dependency "sqlite3"
