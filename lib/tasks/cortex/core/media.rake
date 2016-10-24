@@ -17,7 +17,7 @@ namespace :cortex do
 
         puts "Creating Fields..."
 
-        allowed_asset_content_types = %w(txt pdf doc docx xls xlsx png jpg gif bmp)
+        allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
         media.fields.new(name: 'Asset', field_type: 'asset_field_type',
                          validations:
                            {
