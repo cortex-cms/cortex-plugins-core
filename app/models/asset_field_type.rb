@@ -20,6 +20,7 @@ class AssetFieldType < FieldType
   end
 
   def data=(data_hash)
+    @existing_data = data_hash.deep_symbolize_keys[:existing_data]
     self.asset = data_hash.deep_symbolize_keys[:asset]
   end
 
@@ -27,7 +28,7 @@ class AssetFieldType < FieldType
     {
         'asset': {
             'file_name': asset_file_name,
-            'url': asset.url,
+            'url': url,
             'dimensions': dimensions,
             'content_type': asset_content_type,
             'file_size': asset_file_size,
@@ -112,5 +113,9 @@ class AssetFieldType < FieldType
 
   def validate_asset_content_type
     attachment_content_type_validator.validate_each(self, :asset, asset)
+  end
+
+  def url
+    @existing_data.empty? ?  asset.url : @existing_data[:asset][:url]
   end
 end
