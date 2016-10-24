@@ -25,10 +25,10 @@ class UserFieldType < FieldType
   end
 
   def valid_user_id?
-    return true if id.nil?
+    return true if user_id.nil?
 
-    unless User.exists?(id)
-      errors.add(:user_id, "Must be for a Valid User")
+    unless User.exists?(user_id)
+      errors.add(:user_id, "does not exist")
       false
     end
   end
