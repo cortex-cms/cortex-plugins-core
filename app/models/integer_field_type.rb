@@ -1,7 +1,8 @@
 class IntegerFieldType < FieldType
   attr_accessor :integer
 
-  validates_numericality_of :integer
+  validates :integer, presence: true, if: Proc.new { |int| validate_key(:presence) }
+  validates_numericality_of :integer, unless: "integer.nil?"
   validate :less_than, if: Proc.new { |int| validate_key(:max) }
   validate :greater_than, if:  Proc.new { |int| validate_key(:min) }
 

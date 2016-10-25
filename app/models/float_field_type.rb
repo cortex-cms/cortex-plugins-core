@@ -1,9 +1,10 @@
 class FloatFieldType < FieldType
   attr_accessor :float
  
-  validates_numericality_of :float
-  validate :less_than, if: Proc.new { |int| validate_key(:max) }
-  validate :greater_than, if: Proc.new { |int| validate_key(:min) }
+  validates :float, presence: true, if: Proc.new { |float| validate_key(:presence) }
+  validates_numericality_of :float, unless: "float.nil?"
+  validate :less_than, if: Proc.new { |float| validate_key(:max) }
+  validate :greater_than, if: Proc.new { |float| validate_key(:min) }
 
   def data=(data_hash)
     @float = data_hash.deep_symbolize_keys[:float]
