@@ -1,5 +1,4 @@
 class IntegerFieldType < FieldType
-
   attr_accessor :integer
 
   validates :integer, presence: true, if: :validate_presence?

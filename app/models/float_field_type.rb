@@ -1,5 +1,4 @@
 class FloatFieldType < FieldType
-
   attr_accessor :float
  
   validates_numericality_of :float

@@ -4,7 +4,6 @@ class TextFieldType < FieldType
   validates :text, presence: true, if: :validate_presence?
   validate :text_length, if: :validate_length?
 
-  
   def data=(data_hash)
     @text = data_hash.deep_symbolize_keys[:text]
   end
