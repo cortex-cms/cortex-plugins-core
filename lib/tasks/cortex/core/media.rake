@@ -59,7 +59,7 @@ namespace :cortex do
               "columns": [
                 {
                   "grid_width": 12,
-                  "fields": [
+                  "elements": [
                     {
                       "id": media.fields[0].id
                     }
@@ -74,7 +74,7 @@ namespace :cortex do
               "columns": [
                 {
                   "grid_width": 12,
-                  "fields": [
+                  "elements": [
                     {
                       "id": media.fields[1].id
                     },
