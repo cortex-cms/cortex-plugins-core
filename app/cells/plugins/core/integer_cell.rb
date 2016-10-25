@@ -38,7 +38,6 @@ module Plugins
       def render_input
         @options[:form].number_field 'data[integer]', value: value, placeholder: @options[:placeholder]  , max: max, min: min, class: 'mdl-textfield__input'
       end
-
     end
   end
 end

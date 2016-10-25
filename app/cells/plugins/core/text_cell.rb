@@ -52,7 +52,6 @@ module Plugins
       def render_multiline_input
         @options[:form].text_area 'data[text]', value: value , placeholder: @options[:placeholder], rows: input_display&.[](:rows) , class: 'mdl-textfield__input'
       end
-
     end
   end
 end
