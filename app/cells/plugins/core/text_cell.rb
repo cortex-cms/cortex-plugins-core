@@ -26,10 +26,6 @@ module Plugins
       def input_styles
         input_display&.[](:styles)
       end
-      
-      def number_step
-        input_display&.[](:number_step) || 1
-      end
 
       def value
         data&.[]('text') || @options[:default_value]
