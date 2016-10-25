@@ -3,7 +3,9 @@ class TextFieldType < FieldType
 
   validates :text, presence: true, if: :validate_presence?
   validate :text_length, if: :validate_length?
-
+  validate :less_than, if: :validate_min?
+  validate :greater_than, if: :validate_max?
+  
   def data=(data_hash)
     @text = data_hash.deep_symbolize_keys[:text]
   end
@@ -19,6 +21,22 @@ class TextFieldType < FieldType
   end
 
   private
+
+  def less_than
+     errors.add(:text, "must be less_than #{@validations[:max]}") if @integer <= validations[:max]
+  end
+
+  def greater_than
+     errors.add(:text, "must be greater_than #{@validations[:min]}") if @integer >= validations[:min]
+  end
+
+  def validate_max?
+    @validations.key? :max
+  end
+
+  def validate_min?
+    @validations.key? :min
+  end
 
   def mapping_field_name
     "#{field_name.parameterize('_')}_text"
