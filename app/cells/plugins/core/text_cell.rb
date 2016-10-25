@@ -13,10 +13,6 @@ module Plugins
         render
       end
 
-      def numeric_input
-        render
-      end
-
       private
 
       def input_display
@@ -59,10 +55,6 @@ module Plugins
 
       def render_multiline_input
         @options[:form].text_area 'data[text]', value: value , placeholder: @options[:placeholder], rows: input_display&.[](:rows) , class: 'mdl-textfield__input'
-      end
-
-      def render_numeric_input
-        @options[:form].number_field 'data[text]', value: value , placeholder: @options[:placeholder], step: number_step , class: 'mdl-textfield__input'
       end
 
     end

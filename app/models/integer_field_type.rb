@@ -7,10 +7,6 @@ class IntegerFieldType < FieldType
   validate :less_than, if: :validate_min?
   validate :greater_than, if: :validate_max?
 
-  def validations=(validations_hash={})
-    @validations = validations_hash.deep_symbolize_keys
-  end
-
   def data=(data_hash)
     @integer = data_hash.deep_symbolize_keys[:integer]
   end
@@ -32,11 +28,11 @@ class IntegerFieldType < FieldType
   end
 
   def less_than
-     errors.add(:integer, "must be less_than #{@validations[:max]}") if @integer <= validations[:max]
+     errors.add(:integer, "must be less_than #{@validations[:max]}") if :integer <= validations[:max]
   end
 
   def greater_than
-     errors.add(:integer, "must be greater_than #{@validations[:min]}") if @integer >= validations[:min]
+     errors.add(:integer, "must be greater_than #{@validations[:min]}") if :integer >= validations[:min]
   end
 
   def validate_max?

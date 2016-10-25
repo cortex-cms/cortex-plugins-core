@@ -6,10 +6,6 @@ class FloatFieldType < FieldType
   validate :less_than, if: :validate_min?
   validate :greater_than, if: :validate_max?
 
-  def validations=(validations_hash ={})
-    @validations = validations_hash.deep_symbolize_keys
-  end
-
   def data=(data_hash)
     @float = data_hash.deep_symbolize_keys[:float]
   end
@@ -31,11 +27,11 @@ class FloatFieldType < FieldType
   end
 
   def less_than
-     errors.add(:float, "must be less_than #{@validations[:max]}") if @float <= @validations[:max]
+     errors.add(:float, "must be less_than #{@validations[:max]}") if :float <= @validations[:max]
   end
 
   def greater_than
-     errors.add(:float, "must be greater_than #{@validations[:min]}") if @float >= @validations[:min]
+     errors.add(:float, "must be greater_than #{@validations[:min]}") if :float >= @validations[:min]
   end
 
   def validate_max?

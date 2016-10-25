@@ -17,8 +17,8 @@ module Plugins
       end
 
       def step
-        decimals = field.validations[:decimals]
-        decimals ?  "0." + ("0" * ( decimals - 1)) + "1" :   "0.01"
+        step = field.validations[:step]
+        step ? step :  "0.01"
       end
       
       def input_display
@@ -35,12 +35,6 @@ module Plugins
       
       def value
         data&.[]('float') || @options[:default_value]
-      end
-
-      def render_label_and_input
-        render_label(:float) do
-          render_input
-        end
       end
 
       def render_label
