@@ -130,6 +130,6 @@ class AssetFieldType < FieldType
     # that will be added later and we don't want to duplicate it
     # Then remove the old file extension and replace it with the paperclipp'd new one
     new_path = URI.parse(path).path.slice(1..-1)
-    new_path.gsub(/\.\w{2,6}$/, ".:extension")
+    new_path.gsub(File.extname(path), ".:extension")
   end
 end
