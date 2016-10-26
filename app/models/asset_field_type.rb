@@ -16,11 +16,11 @@ class AssetFieldType < FieldType
 
   def metadata=(metadata_hash)
     @metadata = metadata_hash.deep_symbolize_keys
-    Paperclip::HasAttachedFile.define_on(self.class, :asset, metadata)
+    @existing_data = metadata_hash[:existing_data]
+    Paperclip::HasAttachedFile.define_on(self.class, :asset, existing_metadata)
   end
 
   def data=(data_hash)
-    @existing_data = data_hash.deep_symbolize_keys[:existing_data]
     self.asset = data_hash.deep_symbolize_keys[:asset]
   end
 
@@ -28,7 +28,7 @@ class AssetFieldType < FieldType
     {
         'asset': {
             'file_name': asset_file_name,
-            'url': url,
+            'url': asset.url,
             'dimensions': dimensions,
             'content_type': asset_content_type,
             'file_size': asset_file_size,
@@ -115,7 +115,21 @@ class AssetFieldType < FieldType
     attachment_content_type_validator.validate_each(self, :asset, asset)
   end
 
-  def url
-    @existing_data.empty? ?  asset.url : @existing_data[:asset][:url]
+  def existing_metadata
+    metadata.except!(:existing_data)
+
+    unless @existing_data.empty?
+      metadata[:path] = updated_url(@existing_data['asset']['url'])
+    end
+
+    metadata
+  end
+
+  def updated_url(path)
+    # Take the parse path of the existing URL and drop the first '/',
+    # that will be added later and we don't want to duplicate it
+    # Then remove the old file extension and replace it with the paperclipp'd new one
+    new_path = URI.parse(path).path.slice(1..-1)
+    new_path.gsub(/\.\w{2,6}$/, ".:extension")
   end
 end
