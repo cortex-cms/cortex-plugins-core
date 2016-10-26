@@ -5,7 +5,8 @@ class AssetFieldType < FieldType
                 :asset_updated_at,
                 :asset
 
-  attr_reader :dimensions
+  attr_reader :dimensions,
+              :existing_data
 
   before_save :extract_dimensions
 
@@ -26,15 +27,16 @@ class AssetFieldType < FieldType
 
   def data
     {
-        'asset': {
-            'file_name': asset_file_name,
-            'url': asset.url,
-            'dimensions': dimensions,
-            'content_type': asset_content_type,
-            'file_size': asset_file_size,
-            'updated_at': asset_updated_at
-        },
-        'asset_field_type_id': id
+      'asset': {
+        'file_name': asset_file_name,
+        'url': asset.url,
+        'style_urls': style_urls,
+        'dimensions': dimensions,
+        'content_type': asset_content_type,
+        'file_size': asset_file_size,
+        'updated_at': asset_updated_at
+      },
+      'asset_field_type_id': id
     }
   end
 
@@ -60,8 +62,8 @@ class AssetFieldType < FieldType
     unless tempfile.nil?
       geometry = Paperclip::Geometry.from_file(tempfile)
       @dimensions = {
-          width: geometry.width.to_i,
-          height: geometry.height.to_i
+        width: geometry.width.to_i,
+        height: geometry.height.to_i
       }
     end
   end
@@ -77,7 +79,7 @@ class AssetFieldType < FieldType
   end
 
   def validate_presence?
-    @validations.key? :presence
+    validations.key? :presence
   end
 
   def attachment_size_validator
@@ -116,11 +118,19 @@ class AssetFieldType < FieldType
     attachment_content_type_validator.validate_each(self, :asset, asset)
   end
 
+  def style_urls
+    if existing_data.empty?
+      (metadata[:styles].map { |key, value| [key, asset.url(key)] }).to_h
+    else
+      existing_data[:asset][:style_urls]
+    end
+  end
+
   def existing_metadata
     metadata.except!(:existing_data)
 
-    unless @existing_data.empty?
-      metadata[:path].gsub(":id", @existing_data['asset_field_type_id']) if metadata[:path]
+    unless existing_data.empty?
+      metadata[:path].gsub(":id", existing_data['asset_field_type_id']) if metadata[:path]
     end
 
     metadata
