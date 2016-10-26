@@ -27,6 +27,17 @@ class AssetFieldType < FieldType
 
   def data
     {
+<<<<<<< HEAD
+        'asset': {
+            'file_name': asset_file_name,
+            'url': asset.url,
+            'dimensions': dimensions,
+            'content_type': asset_content_type,
+            'file_size': asset_file_size,
+            'updated_at': asset_updated_at
+        },
+        'asset_field_type_id': id
+=======
       'asset': {
         'file_name': asset_file_name,
         'url': asset.url,
@@ -35,8 +46,8 @@ class AssetFieldType < FieldType
         'content_type': asset_content_type,
         'file_size': asset_file_size,
         'updated_at': asset_updated_at
-      },
-      'asset_field_type_id': id
+      }
+>>>>>>> Implement storage of thumbnail/style URLs, asset wizard info box, and asset thumbnail in index
     }
   end
 
@@ -129,8 +140,13 @@ class AssetFieldType < FieldType
   def existing_metadata
     metadata.except!(:existing_data)
 
+<<<<<<< HEAD
+    unless @existing_data.empty?
+      metadata[:path].gsub(":id", @existing_data['asset_field_type_id']) if metadata[:path]
+=======
     unless existing_data.empty?
-      metadata[:path].gsub(":id", existing_data['asset_field_type_id']) if metadata[:path]
+      metadata[:path] = updated_url(existing_data['asset']['url'])
+>>>>>>> Implement storage of thumbnail/style URLs, asset wizard info box, and asset thumbnail in index
     end
 
     metadata

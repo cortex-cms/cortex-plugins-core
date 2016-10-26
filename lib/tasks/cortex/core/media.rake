@@ -73,7 +73,7 @@ namespace :cortex do
               "description": "Provide details and metadata that will enhance search or inform end-users.",
               "columns": [
                 {
-                  "grid_width": 12,
+                  "grid_width": 6,
                   "elements": [
                     {
                       "id": media.fields[1].id
@@ -94,6 +94,20 @@ namespace :cortex do
                     {
                       "id": media.fields[5].id
                     }
+                  ]
+                },
+                {
+                  "grid_width": 6,
+                  "elements": [
+                    {
+                      "plugin": {
+                        "class_name": "plugins/core/asset_info",
+                        "render_method": "show",
+                        "data": {
+                          "field_id": media.fields.find_by_name('Asset').id
+                        }
+                      }
+                    },
                   ]
                 }
               ]
@@ -118,12 +132,16 @@ namespace :cortex do
                 "name": "Thumbnail",
                 "cells": [{
                             "field": {
-                              "method": "author_image"
-                            },
-                            "display": {
-                              "classes": [
-                                "circular"
-                              ]
+                              "plugin": {
+                                "class_name": "plugins/core/asset_info",
+                                "render_method": "index",
+                                "data": {
+                                  "field_id": media.fields.find_by_name('Asset').id
+                                },
+                                "config": {
+                                  "thumbnail_style": "mini"
+                                }
+                              }
                             }
                           }]
               },
