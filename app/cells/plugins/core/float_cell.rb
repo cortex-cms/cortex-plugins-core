@@ -16,7 +16,7 @@ module Plugins
       end
 
       def step
-        field.validations[:step] ? field.validations[:step] :  "0.01"
+        field.validations[:step] ||  0.01
       end
       
       def input_display
