@@ -33,7 +33,8 @@ class AssetFieldType < FieldType
             'content_type': asset_content_type,
             'file_size': asset_file_size,
             'updated_at': asset_updated_at
-        }
+        },
+        'asset_field_type_id': id
     }
   end
 
@@ -119,17 +120,9 @@ class AssetFieldType < FieldType
     metadata.except!(:existing_data)
 
     unless @existing_data.empty?
-      metadata[:path] = updated_url(@existing_data['asset']['url'])
+      metadata[:path].gsub(":id", @existing_data['asset_field_type_id']) if metadata[:path]
     end
 
     metadata
-  end
-
-  def updated_url(path)
-    # Take the parse path of the existing URL and drop the first '/',
-    # that will be added later and we don't want to duplicate it
-    # Then remove the old file extension and replace it with the paperclipp'd new one
-    new_path = URI.parse(path).path.slice(1..-1)
-    new_path.gsub(File.extname(path), ".:extension")
   end
 end
