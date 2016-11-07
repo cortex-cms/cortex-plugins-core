@@ -1,6 +1,6 @@
 %h4
   = render_label
-  
+
 - @options[:metadata]["data"]["tree_array"].each do |node|
   = render_field_id
   = cell(Plugins::Core::CheckboxCell, nil, node: node, data: data).(:checkbox)
