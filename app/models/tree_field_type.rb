@@ -11,7 +11,7 @@ class TreeFieldType < FieldType
     if values.is_a?(Hash)
       @values = values.keys
     else
-      @values = [values]
+      @values = values
     end
   end
 
