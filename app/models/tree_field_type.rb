@@ -5,13 +5,17 @@ class TreeFieldType < FieldType
   validate  :minimum, if: :validate_minimum?
   validate  :maximum, if: :validate_maximum?
 
+  def data
+    @values
+  end
+
   def data=(data_hash)
     values = data_hash.deep_symbolize_keys[:values]
 
     if values.is_a?(Hash)
-      @values = values.keys
+      @values = { values: values.keys }
     else
-      @values = values
+      @values = { values: [values] }
     end
   end
 
