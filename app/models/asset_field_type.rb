@@ -16,7 +16,7 @@ class AssetFieldType < FieldType
   validate :validate_asset_content_type, if: :validate_content_type?
 
   def metadata=(metadata_hash)
-    @metadata = metadata_hash.deep_symbolize_keys
+    @metadata = format_data(metadata_hash).deep_symbolize_keys
     @existing_data = metadata_hash[:existing_data]
     Paperclip::HasAttachedFile.define_on(self.class, :asset, existing_metadata)
   end
@@ -51,6 +51,15 @@ class AssetFieldType < FieldType
   end
 
   private
+
+  def is_image(mime_type)
+    ["image/jpeg", "image/pjpeg", "image/png","application/pdf" ,"image/x-png", "image/gif"].include?(mime_type)
+  end
+
+  def format_data(metadata_hash)
+   return metadata_hash if is_image(metadata_hash[:content_type])
+   metadata_hash.reject{|k| k == "processors"}
+  end
 
   def image?
     asset_content_type =~ %r{^(image|(x-)?application)/(bmp|gif|jpeg|jpg|pjpeg|png|x-png)$}
