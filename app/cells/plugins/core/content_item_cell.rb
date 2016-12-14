@@ -7,8 +7,8 @@ module Plugins
 
       private
 
-      def render_field_name
-        "Insert #{field.name}"
+      def render_label
+        "Add #{field.name}"
       end
     end
   end
