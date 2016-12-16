@@ -26,7 +26,7 @@ module Plugins
       def input_styles
         input_display&.[](:styles)
       end
-      
+
       def value
         data&.[]('text') || @options[:default_value]
       end
