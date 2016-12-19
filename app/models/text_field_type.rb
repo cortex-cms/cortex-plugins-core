@@ -1,5 +1,6 @@
 class TextFieldType < FieldType
   attr_accessor :text
+  jsonb_accessor :data, text: :string
 
   validates :text, presence: true, if: :validate_presence?
   validate :text_length, if: :validate_length?

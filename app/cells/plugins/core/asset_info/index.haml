@@ -1,2 +1,2 @@
 - if asset
-  = image_tag(asset_thumb(asset), height: '50px')
+  = image_tag(asset['style_urls'][config[:thumbnail_style]], height: '50px')

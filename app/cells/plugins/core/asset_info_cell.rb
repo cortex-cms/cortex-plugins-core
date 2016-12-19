@@ -20,10 +20,6 @@ module Plugins
         @options[:config] || {}
       end
 
-      def asset_thumb(asset)
-        asset['style_urls'] ? asset['style_urls'][config[:thumbnail_style]] : 'https://secure.gravatar.com/avatar/f995c9cc06a8282138cf6c0691396f6d'
-      end
-
       def asset
         data['asset']
       end
