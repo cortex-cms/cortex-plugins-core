@@ -1,4 +1,4 @@
-(function (global) {
+(function (global) { 
   'use strict';
 
   global.CKEDITOR.plugins.add('cortex_media_insert', {
