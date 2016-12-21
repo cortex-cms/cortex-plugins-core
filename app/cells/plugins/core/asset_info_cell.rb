@@ -41,7 +41,7 @@ module Plugins
       end
 
       def link_to_asset
-        link_to(asset['url'], asset['url'])
+        link_to asset['url'], asset['url'], target: '_blank'
       end
     end
   end
