@@ -122,7 +122,7 @@ class AssetFieldType < FieldType
     if existing_data.empty?
       (metadata[:styles].map { |key, value| [key, asset.url(key)] }).to_h
     else
-      existing_data[:asset][:style_urls]
+      existing_data.deep_symbolize_keys[:asset][:style_urls]
     end
   end
 
@@ -130,7 +130,7 @@ class AssetFieldType < FieldType
     metadata.except!(:existing_data)
 
     unless existing_data.empty?
-      metadata[:path].gsub(":id", existing_data['asset_field_type_id']) if metadata[:path]
+      metadata[:path].gsub!(":id", existing_data['asset_field_type_id']) if metadata[:path]
     end
 
     metadata
