@@ -1,4 +1,5 @@
 require 'ckeditor'
+require 'jsonb_accessor'
 
 module Cortex
   module Plugins
