@@ -7,7 +7,7 @@ class BooleanFieldType < FieldType
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
     json = {}
-    json[mapping_field_name] = field_item.data['boolean']
+    json[mapping_field_name] = field_item.data['value']
     json
   end
 
