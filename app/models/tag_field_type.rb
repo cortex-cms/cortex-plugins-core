@@ -10,7 +10,7 @@ class TagFieldType < FieldType
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
     json = {}
-    json[mapping_field_name] = field_item.data['tag']
+    json[mapping_field_name] = field_item.data['tag_list']
     json
   end
 

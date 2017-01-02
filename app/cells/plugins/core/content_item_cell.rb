@@ -15,8 +15,8 @@ module Plugins
         "Add #{field.name}"
       end
 
-      def render_popup
-        @options[:form].text_field 'data[content_item_id]', value: value, style: 'display:none;'
+      def render_content_item_id
+        @options[:form].hidden_field 'data[content_item_id]', value: value
       end
     end
   end
