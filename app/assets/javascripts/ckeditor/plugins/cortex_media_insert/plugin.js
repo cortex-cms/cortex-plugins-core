@@ -1,4 +1,4 @@
-(function (global) { 
+(function (global) {
   'use strict';
 
   global.CKEDITOR.plugins.add('cortex_media_insert', {
@@ -6,14 +6,14 @@
     init: function (editor) {
       editor.addCommand('insertMedia', {
         exec: function (editor) {
-          window.MODALS.featured.open();
+          window.MODALS.wysiwyg.open();
 
           global.media_select = {};
           global.media_select_defer = $.Deferred();
           global.media_select_defer.promise(global.media_select);
 
           global.media_select.done(function (media) {
-            window.MODALS.featured.close();
+            window.MODALS.wysiwyg.close();
 
             var mediaTag = editor.document.createElement('media');
             mediaTag.setAttribute('id', media.id);

@@ -3,14 +3,17 @@
 
 = render_label
 %br
-%button.content_item_button.text-center.popup--open
-  .button_content
+%button.content-item-button.popup--open
+  .content-item-button__select.content-item-button__select--selected
     %i{ class: "material-icons icon" }
       cloud_upload
     %br
-    %span.content_item_button-text
-      Click to add a
+    %span.content-item-button__select__text
+      Click to select a
       = field.name
-      from the media library
+      from the Media library
+  - if associated_content_item && associated_primary_field_type_class == AssetFieldType
+    .content-item-button__selection
+      = render_association_cell
 %small
   Recommended size: 1452px x 530px with a live area of 930px x 530px
