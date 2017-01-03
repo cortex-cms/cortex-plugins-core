@@ -1,8 +1,10 @@
 class TextFieldType < FieldType
   attr_accessor :text
+  jsonb_accessor :data, text: :string
 
   validates :text, presence: true, if: :validate_presence?
   validate :text_length, if: :validate_length?
+  validate :text_unique, if: :validate_uniqueness?
 
   def data=(data_hash)
     @text = data_hash.deep_symbolize_keys[:text]
@@ -25,12 +27,22 @@ class TextFieldType < FieldType
   end
 
   def text_present
-    errors.add(:text, "must be present") if @text.empty?
+    errors.add(:text, 'must be present') if @text.empty?
   end
 
   def text_length
     validator = LengthValidator.new(validations[:length].merge(attributes: [:text]))
     validator.validate_each(self, :text, text)
+  end
+
+  def text_unique
+    unless field.field_items.jsonb_contains(:data, text: text).empty?
+      errors.add(:text, "#{field.name} Must be unique")
+    end
+  end
+
+  def validate_uniqueness?
+    @validations.key? :uniqueness
   end
 
   def validate_presence?

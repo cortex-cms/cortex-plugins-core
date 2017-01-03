@@ -3,8 +3,13 @@ module Plugins
     class AssetCell < Plugins::Core::Cell
       include ActionView::Helpers::NumberHelper
       include UtilityHelper
+      include Cells::AssociationHelper
 
       def input
+        render
+      end
+
+      def association
         render
       end
 
@@ -32,6 +37,14 @@ module Plugins
 
       def render_input
         @options[:form].file_field 'data[asset]'
+      end
+
+      def associated_content_item_thumb_url
+        data['asset']['style_urls']['mini']
+      end
+
+      def render_associated_content_item_thumb
+        image_tag(associated_content_item_thumb_url, height: '50px')
       end
     end
   end
