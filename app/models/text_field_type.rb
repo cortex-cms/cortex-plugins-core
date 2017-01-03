@@ -36,8 +36,8 @@ class TextFieldType < FieldType
   end
 
   def text_unique
-    unless Field.find_by_name(field_info.name).field_items.jsonb_contains(:data, text: text).empty?
-      errors.add(:text, "#{field_info.name} Must be unique")
+    unless field.field_items.jsonb_contains(:data, text: text).empty?
+      errors.add(:text, "#{field.name} Must be unique")
     end
   end
 
