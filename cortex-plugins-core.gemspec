@@ -23,6 +23,4 @@ Gem::Specification.new do |s|
   s.add_dependency "mimemagic", "~> 0.3.2"
   s.add_dependency "ckeditor", "~> 4.2.2"
   s.add_dependency "jsonb_accessor", "~> 1.0.0.beta"
-
-  s.add_development_dependency "sqlite3"
 end

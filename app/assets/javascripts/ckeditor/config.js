@@ -18,5 +18,5 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'insert', groups: [ 'insert' ] }
 	];
 
-	config.removeButtons = 'Image,Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,ShowBlocks,About';
+	config.removeButtons = 'Image,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,ShowBlocks,About';
 };

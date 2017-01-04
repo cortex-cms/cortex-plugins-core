@@ -2,7 +2,6 @@
   'use strict';
 
   global.CKEDITOR.plugins.add('cortex_media_insert', {
-    icons: 'media',
     init: function (editor) {
       editor.addCommand('insertMedia', {
         exec: function (editor) {
@@ -27,7 +26,8 @@
       editor.ui.addButton('cortexMediaInsert', {
         label: 'Insert Media',
         command: 'insertMedia',
-        toolbar: 'insert,0'
+        toolbar: 'insert,0',
+        icon: 'image'
       });
     }
   });
