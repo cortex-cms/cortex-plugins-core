@@ -1,8 +1,9 @@
-var ready = function() {
+var ckeditor_init = function() {
   $('.ckeditor').each(function() {
-    CKEDITOR.replace($(this).attr('id'));
+    var editor_id = $(this).attr('id');
+    if (!CKEDITOR.instances[editor_id]) { CKEDITOR.replace(); }
   });
 };
 
-$(document).ready(ready);
-$(document).on('page:load', ready);
+$(document).ready(ckeditor_init);
+$(document).on('turbolinks:load', ckeditor_init);
