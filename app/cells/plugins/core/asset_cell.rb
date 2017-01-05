@@ -40,7 +40,7 @@ module Plugins
       end
 
       def associated_content_item_thumb_url
-        data['asset']['style_urls']['mini']
+        data['asset']['image'] ?  data['asset']['style_urls']['mini'] : 'https://s3.amazonaws.com/canvasmp3/cor_file_default.png'
       end
 
       def render_associated_content_item_thumb

@@ -16,7 +16,7 @@ class AssetFieldType < FieldType
   validate :validate_asset_content_type, if: :validate_content_type?
 
   def metadata=(metadata_hash)
-    @metadata = metadata_hash.deep_symbolize_keys
+    @metadata = asset_post_processing_data(metadata_hash).deep_symbolize_keys
     @existing_data = metadata_hash[:existing_data]
     Paperclip::HasAttachedFile.define_on(self.class, :asset, existing_metadata)
   end
@@ -30,6 +30,7 @@ class AssetFieldType < FieldType
       'asset': {
         'file_name': asset_file_name,
         'url': asset.url,
+        'image': !!image?,
         'style_urls': style_urls,
         'dimensions': dimensions,
         'content_type': asset_content_type,
@@ -51,6 +52,11 @@ class AssetFieldType < FieldType
   end
 
   private
+
+  def asset_post_processing_data(metadata_hash)
+   return metadata_hash unless MimeMagic.new(field_data["asset"].content_type).mediatype == 'image'
+   metadata_hash.merge(metadata_hash["image_styles"])
+  end
 
   def image?
     asset_content_type =~ %r{^(image|(x-)?application)/(bmp|gif|jpeg|jpg|pjpeg|png|x-png)$}
@@ -119,6 +125,7 @@ class AssetFieldType < FieldType
   end
 
   def style_urls
+    return unless image?
     if existing_data.empty?
       (metadata[:styles].map { |key, value| [key, asset.url(key)] }).to_h
     else

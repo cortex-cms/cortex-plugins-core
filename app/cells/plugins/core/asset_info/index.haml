@@ -1,2 +1,4 @@
-- if asset
+- if asset['image']
   = image_tag(asset['style_urls'][config[:thumbnail_style]], height: '50px')
+- else
+  = image_tag('https://s3.amazonaws.com/canvasmp3/cor_file_default.png', height: '50px')
