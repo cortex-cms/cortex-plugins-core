@@ -1,4 +1,3 @@
-require 'ckeditor'
 require 'jsonb_accessor'
 
 module Cortex
@@ -6,7 +5,7 @@ module Cortex
     module Core
       class Engine < ::Rails::Engine
         initializer 'cortex-plugins-core.assets.precompile' do |app|
-          app.config.assets.precompile += %w( ckeditor/* )
+          app.config.assets.precompile += %w(ckeditor/config.js)
         end
       end
     end

@@ -46,7 +46,7 @@ module Plugins
       end
 
       def render_wysiwyg
-        @options[:form].cktext_area 'data[text]', value: value, class: "#{input_classes} ckeditor", ckeditor: input_styles
+        @options[:form].text_area 'data[text]', value: value, class: "#{input_classes} wysiwyg_ckeditor", style: input_styles
       end
 
       def render_multiline_input

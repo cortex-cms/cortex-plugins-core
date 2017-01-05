@@ -1,7 +1,10 @@
 var ckeditor_init = function() {
-  $('.ckeditor').each(function() {
+  $('.wysiwyg_ckeditor').each(function() {
     var editor_id = $(this).attr('id');
-    if (!CKEDITOR.instances[editor_id]) { CKEDITOR.replace(); }
+
+    CKEDITOR.replace(editor_id, {
+      customConfig: '/assets/ckeditor/config.js'
+    });
   });
 };
 

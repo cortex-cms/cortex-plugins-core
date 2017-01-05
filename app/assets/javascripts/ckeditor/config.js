@@ -1,5 +1,7 @@
+CKEDITOR.plugins.addExternal( 'cortex_media_insert', '/assets/ckeditor/plugins/cortex_media_insert/' );
+
 CKEDITOR.editorConfig = function( config ) {
-	config.extraPlugins = 'cortex_media_insert';
+  config.extraPlugins = 'cortex_media_insert';
 
 	config.toolbarGroups = [
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
