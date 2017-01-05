@@ -1,5 +1,7 @@
+CKEDITOR.plugins.addExternal( 'cortex_media_insert', '/assets/ckeditor/plugins/cortex_media_insert/' );
+
 CKEDITOR.editorConfig = function( config ) {
-	config.extraPlugins = 'cortex_media_insert';
+  config.extraPlugins = 'cortex_media_insert';
 
 	config.toolbarGroups = [
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
@@ -10,7 +12,6 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'colors', groups: [ 'colors' ] },
 		{ name: 'tools', groups: [ 'tools' ] },
 		{ name: 'others', groups: [ 'others' ] },
-		{ name: 'about', groups: [ 'about' ] },
 		'/',
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
@@ -18,5 +19,5 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'insert', groups: [ 'insert' ] }
 	];
 
-	config.removeButtons = 'Image,Source,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,ShowBlocks,About';
+	config.removeButtons = 'Image,Save,NewPage,Preview,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,ShowBlocks,About';
 };
