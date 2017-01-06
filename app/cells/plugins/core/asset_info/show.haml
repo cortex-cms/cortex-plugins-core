@@ -7,7 +7,10 @@
   .asset-info.mdl-card.mdl-shadow--2dp
     .mdl-card__title
       %h2.mdl-card__title-text
-        = image_tag(asset['url'], style: 'max-height: 200px;')
+        - if asset['style_urls']
+          = image_tag(asset['url'], style: 'max-height: 200px;')
+        - else
+          = asset['content_type']
     .mdl-card__supporting-text
       %dl
         %dt Original Filename
@@ -21,7 +24,7 @@
           = number_to_human_size(asset['file_size'])
         %dt Dimensions
         %dd
-          = dimensions
+          = asset['style_urls'] ? dimensions : 'Not Image Asset'
         %dt Creator
         %dd
           = creator.fullname

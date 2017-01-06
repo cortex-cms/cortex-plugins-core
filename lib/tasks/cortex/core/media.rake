@@ -17,7 +17,7 @@ namespace :cortex do
 
         puts "Creating Fields..."
 
-        allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
+        allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx zip odt epub svg ico png jpg gif bmp)
         media.fields.new(name: 'Asset', field_type: 'asset_field_type',
                          validations:
                            {
@@ -29,15 +29,17 @@ namespace :cortex do
                            },
                          metadata:
                            {
-                             styles: {
-                               large: {geometry: '1800x1800>', format: :jpg},
-                               medium: {geometry: '800x800>', format: :jpg},
-                               default: {geometry: '300x300>', format: :jpg},
-                               mini: {geometry: '100x100>', format: :jpg},
-                               micro: {geometry: '50x50>', format: :jpg},
-                               post_tile: {geometry: '1140x', format: :jpg}
+                            image_styles: {
+                                styles: {
+                                  large: {geometry: '1800x1800>', format: :jpg},
+                                  medium: {geometry: '800x800>', format: :jpg},
+                                  default: {geometry: '300x300>', format: :jpg},
+                                  mini: {geometry: '100x100>', format: :jpg},
+                                  micro: {geometry: '50x50>', format: :jpg},
+                                  post_tile: {geometry: '1140x', format: :jpg}
+                                },
+                                processors: [:thumbnail, :paperclip_optimizer]
                              },
-                             processors: [:thumbnail, :paperclip_optimizer],
                              preserve_files: true,
                              path: ':class/:attachment/careerbuilder-:style-:id.:extension',
                              s3_headers: {'Cache-Control': 'public, max-age=315576000'}

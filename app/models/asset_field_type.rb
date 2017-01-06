@@ -52,6 +52,15 @@ class AssetFieldType < FieldType
 
   private
 
+  def is_image?(mime_type)
+    ['image/jpeg', 'image/pjpeg', 'image/png','application/pdf' ,'image/x-png', 'image/gif'].include?(mime_type)
+  end
+
+  def format_data(metadata_hash)
+   return metadata_hash unless is_image?(field_data["asset"].content_type)
+   metadata_hash.merge(metadata_hash["image_styles"])
+  end
+
   def image?
     asset_content_type =~ %r{^(image|(x-)?application)/(bmp|gif|jpeg|jpg|pjpeg|png|x-png)$}
   end
@@ -119,6 +128,7 @@ class AssetFieldType < FieldType
   end
 
   def style_urls
+    return nil unless is_image?(asset_content_type)
     if existing_data.empty?
       (metadata[:styles].map { |key, value| [key, asset.url(key)] }).to_h
     else
