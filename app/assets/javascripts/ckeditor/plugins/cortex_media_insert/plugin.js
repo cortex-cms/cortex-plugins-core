@@ -5,18 +5,29 @@
     requires: 'widget',
     init: function (editor) {
       editor.widgets.add('media', {
-        template: '<media><img></media>',
+        template: '<media></media>',
         data: function () {
           if (this.data.id) {
-            var image_element = this.element.getFirst(),
+            this.element.setAttribute('id', this.data.id);
+            var child_element,
               alt_text = this.data.alt || this.data.title;
 
-            this.element.setAttribute('id', this.data.id);
-            image_element.setAttribute('src', this.data.image_source);
-            image_element.setAttribute('alt', alt_text);
+            if (this.data.asset_type === 'image') {
+              child_element = new CKEDITOR.dom.element('img');
+
+              child_element.setAttribute('src', this.data.url);
+              child_element.setAttribute('alt', alt_text);
+            } else {
+              child_element = new CKEDITOR.dom.element('a');
+
+              child_element.setAttribute('href', this.data.url);
+              child_element.setText(alt_text)
+            }
+
+            this.element.append(child_element);
           }
         },
-        requiredContent: 'media; img',
+        requiredContent: 'media',
         upcast: function (element) {
           return element.name == 'media';
         }
@@ -37,8 +48,9 @@
               startupData: {
                 id: media.id,
                 title: media.title,
-                image_source: media.src,
-                alt: media.alt
+                url: media.url,
+                alt: media.alt,
+                asset_type: media.asset_type
               }
             });
           });
