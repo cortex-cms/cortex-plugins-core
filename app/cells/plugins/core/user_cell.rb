@@ -16,7 +16,7 @@ module Plugins
       end
 
       def user_data_for_select
-        @options[:user_data].map{ |user| [user.fullname, user.id] }
+        @options[:user_data].map{ |user| ["#{user.fullname} (#{user.email})", user.id] }
       end
     end
   end
