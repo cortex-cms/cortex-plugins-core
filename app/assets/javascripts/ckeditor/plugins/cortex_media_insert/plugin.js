@@ -16,7 +16,7 @@
               className = this.data.class || this.element.getAttribute('class');
 
             if (this.data.asset_type === 'image') {
-              child_element = new CKEDITOR.dom.element('img');
+              child_element = this.element.findOne('img') || new CKEDITOR.dom.element('img');
 
               if (this.data.id) {
                 this.element.setAttribute('id', this.data.id);
@@ -29,7 +29,7 @@
               if (style) child_element.setAttribute('style', style);
               if (className) child_element.setAttribute('class', className);
             } else {
-              child_element = new CKEDITOR.dom.element('a');
+              child_element = this.element.findOne('a') || new CKEDITOR.dom.element('a');
 
               if (this.data.id) {
                 this.element.setAttribute('id', this.data.id);
