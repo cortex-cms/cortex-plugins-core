@@ -3,6 +3,7 @@
 
   $("#featured-button__select").on("click", function (event) {
     event.preventDefault();
+    global.blur_backdrop();
     global.dialogs.featured.showModal();
   });
 
@@ -23,6 +24,7 @@
       '</div></div>'
     );
 
+    global.unblur_backdrop();
     global.dialogs.featured.close();
   });
 }(this));
