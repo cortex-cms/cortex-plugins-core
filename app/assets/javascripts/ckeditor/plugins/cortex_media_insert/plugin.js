@@ -49,14 +49,16 @@
 
       editor.addCommand('insertMedia', {
         exec: function (editor) {
-          window.MODALS.wysiwyg.open();
+          global.blur_backdrop();
+          global.dialogs.wysiwyg.showModal();
 
           global.media_select = {};
           global.media_select_defer = $.Deferred();
           global.media_select_defer.promise(global.media_select);
 
           global.media_select.done(function (media) {
-            window.MODALS.wysiwyg.close();
+            global.unblur_backdrop();
+            global.dialogs.wysiwyg.close();
 
             editor.execCommand('media', {
               startupData: {
