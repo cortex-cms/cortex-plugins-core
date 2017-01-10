@@ -25,7 +25,7 @@ module Plugins
 
       def display_lineage
         @options[:child].to_s + " " + @options[:node]["node"]["name"]
-      end
+      end 
     end
   end
 end
