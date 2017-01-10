@@ -21,8 +21,12 @@ module Plugins
 
       def metadata_values
         @options[:metadata]["data"]["tree_array"].map do |value|
-          [value["node"]["name"], value["id"]]
+          [display_label(value["node"]["name"]), value["id"]]
         end
+      end
+
+      def display_label(label)
+        label.blank? ? "N/A" : label
       end
     end
   end
