@@ -16,7 +16,7 @@ module Plugins
       end
 
       def render_datepicker
-        @options[:form].text_field 'data[timestamp]', value: value, placeholder: @options[:placeholder], class: 'datepicker mdl-textfield__input'
+        @options[:form].text_field 'data[timestamp]', value: value, placeholder: @options[:placeholder], class: 'datepicker mdl-textfield__input', required: required?
       end
     end
   end

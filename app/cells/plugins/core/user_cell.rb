@@ -14,7 +14,7 @@ module Plugins
       end
 
       def render_select
-        @options[:form].select 'data[user_id]', user_data_for_select, {selected: value}
+        @options[:form].select 'data[user_id]', user_data_for_select, {selected: value}, required: required?
       end
 
       def user_data_for_select

@@ -4,9 +4,7 @@ module Plugins
       view_paths << "#{Cortex::Plugins::Core::Engine.root}/app/cells"
 
       def required?
-        unless @options[:validations].blank?
-          @options[:validations][:presence] == true
-        end
+        @options[:presence_validation] == true
       end
     end
   end
