@@ -4,7 +4,7 @@ module Plugins
       view_paths << "#{Cortex::Plugins::Core::Engine.root}/app/cells"
 
       def required?
-        @options[:presence_validation] == true
+        field_item.field.validations["presence"] == true
       end
     end
   end
