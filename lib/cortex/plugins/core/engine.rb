@@ -1,4 +1,5 @@
 require 'jsonb_accessor'
+require 'react_on_rails'
 
 module Cortex
   module Plugins
