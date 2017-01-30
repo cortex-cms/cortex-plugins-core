@@ -1,3 +1,3 @@
 [submodule "cortex"]
 	path = cortex
-	url = https://github.com/cbdr/cortex.git
+	url = git@github.com:cbdr/cortex.git
