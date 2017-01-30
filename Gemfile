@@ -12,3 +12,5 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+
+eval_gemfile(File.join(File.dirname(__FILE__), 'cortex', 'Gemfile'), '') if ENV['RAILS_ENV'] == 'test'
