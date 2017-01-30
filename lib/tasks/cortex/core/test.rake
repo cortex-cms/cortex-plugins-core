@@ -5,7 +5,11 @@ namespace :cortex do
     task test: :environment do
       desc "Prepares and runs the plugin's test suite"
 
-      %x( git submodule add https://github.com/cbdr/cortex.git )
+      puts "Clearing Cortex Directory"
+      %x( git rm -rf cortex && rm -rf ./cortex )
+      
+      puts "Adding Cortex Submodule"
+      %x( git submodule add -f https://github.com/cbdr/cortex.git )
     end
   end
 end
