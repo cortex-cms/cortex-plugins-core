@@ -42,15 +42,15 @@ module Plugins
       end
 
       def render_input
-        @options[:form].text_field 'data[text]', value: value, placeholder: @options[:placeholder], class: 'mdl-textfield__input'
+        @options[:form].text_field 'data[text]', value: value, placeholder: @options[:placeholder], class: 'mdl-textfield__input', required: required?
       end
 
       def render_wysiwyg
-        @options[:form].text_area 'data[text]', value: value, class: "#{input_classes} wysiwyg_ckeditor", style: input_styles
+        @options[:form].text_area 'data[text]', value: value, class: "#{input_classes} wysiwyg_ckeditor", style: input_styles, required: required?
       end
 
       def render_multiline_input
-        @options[:form].text_area 'data[text]', value: value , placeholder: @options[:placeholder], rows: input_display&.[](:rows) , class: 'mdl-textfield__input'
+        @options[:form].text_area 'data[text]', value: value , placeholder: @options[:placeholder], rows: input_display&.[](:rows) , class: 'mdl-textfield__input', required: required?
       end
     end
   end

@@ -4,17 +4,17 @@ module Plugins
       def input
         render
       end
-     
+
       private
-      
+
       def max
-        field.validations[:max] 
+        field.validations[:max]
       end
 
       def min
-        field.validations[:min] 
+        field.validations[:min]
       end
-      
+
       def input_display
         @options[:input_options]&.[](:display)
       end
@@ -26,7 +26,7 @@ module Plugins
       def input_styles
         input_display&.[](:styles)
       end
-      
+
       def value
         data&.[]('integer') || @options[:default_value]
       end
@@ -36,7 +36,7 @@ module Plugins
       end
 
       def render_input
-        @options[:form].number_field 'data[integer]', value: value, placeholder: @options[:placeholder]  , max: max, min: min, class: 'mdl-textfield__input'
+        @options[:form].number_field 'data[integer]', value: value, placeholder: @options[:placeholder]  , max: max, min: min, class: 'mdl-textfield__input', required: required?
       end
     end
   end
