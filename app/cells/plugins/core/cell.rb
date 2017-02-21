@@ -4,6 +4,10 @@ module Plugins
       include ReactOnRailsHelper
 
       view_paths << "#{Cortex::Plugins::Core::Engine.root}/app/cells"
+
+      def required?
+        field.validations["presence"]
+      end
     end
   end
 end
