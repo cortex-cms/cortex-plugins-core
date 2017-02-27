@@ -20,9 +20,10 @@ namespace :cortex do
         allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
         media.fields.new(name: 'Title', field_type: 'text_field_type', validations: {presence: true, uniqueness: true})
         media.fields.new(name: 'Asset', field_type: 'asset_field_type',
-                         naming_data: {
-                           title: media.fields.find_by_name('Title').id
-                         },
+                         naming_data:
+                           {
+                             title: media.fields.find_by_name('Title').id
+                           },
                          validations:
                            {
                              presence: true,

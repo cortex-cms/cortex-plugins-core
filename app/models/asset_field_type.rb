@@ -36,6 +36,7 @@ class AssetFieldType < FieldType
         'file_size': asset_file_size,
         'updated_at': asset_updated_at
       },
+      'asset_title_slug': asset_title_slug,
       'asset_field_type_id': id
     }
   end
@@ -72,6 +73,10 @@ class AssetFieldType < FieldType
     validations[:allowed_extensions].collect do |allowed_content_type|
       MimeMagic.by_extension(allowed_content_type).type
     end
+  end
+
+  def asset_title_slug
+    binding.pry
   end
 
   def mapping_field_name
@@ -130,7 +135,7 @@ class AssetFieldType < FieldType
     metadata.except!(:existing_data)
 
     unless existing_data.empty?
-      metadata[:path].gsub!(":id", existing_data['asset_field_type_id']) if metadata[:path]
+      metadata[:path].gsub!(":naming_data", existing_data['asset_title_slug']) if metadata[:path]
     end
 
     metadata
