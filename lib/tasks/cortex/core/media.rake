@@ -18,7 +18,11 @@ namespace :cortex do
         puts "Creating Fields..."
 
         allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
+        media.fields.new(name: 'Title', field_type: 'text_field_type', validations: {presence: true, uniqueness: true})
         media.fields.new(name: 'Asset', field_type: 'asset_field_type',
+                         naming_data: {
+                           title: media.fields.find_by_name('Title').id
+                         },
                          validations:
                            {
                              presence: true,
@@ -39,10 +43,9 @@ namespace :cortex do
                              },
                              processors: [:thumbnail, :paperclip_optimizer],
                              preserve_files: true,
-                             path: ':class/:attachment/careerbuilder-:style-:id.:extension',
+                             path: ':class/:attachment/:naming_data-:style.:extension',
                              s3_headers: {'Cache-Control': 'public, max-age=315576000'}
                            })
-        media.fields.new(name: 'Title', field_type: 'text_field_type', validations: {presence: true})
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
         media.fields.new(name: 'Tags', field_type: 'tag_field_type')
         media.fields.new(name: 'Expiration Date', field_type: 'date_time_field_type')
