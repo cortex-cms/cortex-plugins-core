@@ -13,7 +13,7 @@ namespace :cortex do
                                   creator_id: 1,
                                   contract_id: 1
                                 })
-        media.save
+        media.save!
 
         puts "Creating Fields..."
 
@@ -47,7 +47,7 @@ namespace :cortex do
         media.fields.new(name: 'Tags', field_type: 'tag_field_type')
         media.fields.new(name: 'Expiration Date', field_type: 'date_time_field_type')
         media.fields.new(name: 'Alt Tag', field_type: 'text_field_type')
-        media.save
+        media.save!
 
         puts "Creating Wizard Decorators..."
         wizard_hash = {
@@ -116,9 +116,9 @@ namespace :cortex do
         }
 
         media_wizard_decorator = Decorator.new(name: "Wizard", data: wizard_hash)
-        media_wizard_decorator.save
+        media_wizard_decorator.save!
 
-        ContentableDecorator.create({
+        ContentableDecorator.create!({
                                       decorator_id: media_wizard_decorator.id,
                                       contentable_id: media.id,
                                       contentable_type: 'ContentType'
@@ -199,9 +199,9 @@ namespace :cortex do
         }
 
         media_index_decorator = Decorator.new(name: "Index", data: index_hash)
-        media_index_decorator.save
+        media_index_decorator.save!
 
-        ContentableDecorator.create({
+        ContentableDecorator.create!({
                                       decorator_id: media_index_decorator.id,
                                       contentable_id: media.id,
                                       contentable_type: 'ContentType'
