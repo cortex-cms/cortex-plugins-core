@@ -76,7 +76,7 @@ class AssetFieldType < FieldType
   end
 
   def asset_title_slug
-    binding.pry
+    existing_data['asset_title_slug'] || ContentItemService.form_fields[@metadata[:naming_data]][:text].parameterize.underscore
   end
 
   def mapping_field_name
@@ -124,7 +124,7 @@ class AssetFieldType < FieldType
   end
 
   def style_urls
-    if existing_data.empty?
+    if @existing_data.empty?
       (metadata[:styles].map { |key, value| [key, asset.url(key)] }).to_h
     else
       existing_data.deep_symbolize_keys[:asset][:style_urls]
@@ -134,8 +134,8 @@ class AssetFieldType < FieldType
   def existing_metadata
     metadata.except!(:existing_data)
 
-    unless existing_data.empty?
-      metadata[:path].gsub!(":naming_data", existing_data['asset_title_slug']) if metadata[:path]
+    if @existing_data.empty?
+      metadata[:path].gsub!(":asset_title_slug", asset_title_slug) if metadata[:path]
     end
 
     metadata

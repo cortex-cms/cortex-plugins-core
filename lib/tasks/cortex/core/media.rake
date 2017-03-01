@@ -18,12 +18,9 @@ namespace :cortex do
         puts "Creating Fields..."
 
         allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
-        media.fields.new(name: 'Title', field_type: 'text_field_type', validations: {presence: true, uniqueness: true})
+        fieldTitle = media.fields.new(name: 'Title', field_type: 'text_field_type', validations: {presence: true, uniqueness: true})
+        fieldTitle.save
         media.fields.new(name: 'Asset', field_type: 'asset_field_type',
-                         naming_data:
-                           {
-                             title: media.fields.find_by_name('Title').id
-                           },
                          validations:
                            {
                              presence: true,
@@ -34,6 +31,7 @@ namespace :cortex do
                            },
                          metadata:
                            {
+                             naming_data: fieldTitle.id,
                              styles: {
                                large: {geometry: '1800x1800>', format: :jpg},
                                medium: {geometry: '800x800>', format: :jpg},
@@ -44,13 +42,14 @@ namespace :cortex do
                              },
                              processors: [:thumbnail, :paperclip_optimizer],
                              preserve_files: true,
-                             path: ':class/:attachment/:naming_data-:style.:extension',
+                             path: ':class/:attachment/:asset_title_slug-:style.:extension',
                              s3_headers: {'Cache-Control': 'public, max-age=315576000'}
                            })
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
         media.fields.new(name: 'Tags', field_type: 'tag_field_type')
         media.fields.new(name: 'Expiration Date', field_type: 'date_time_field_type')
         media.fields.new(name: 'Alt Tag', field_type: 'text_field_type')
+
         media.save!
 
         puts "Creating Wizard Decorators..."
@@ -65,7 +64,7 @@ namespace :cortex do
                   "grid_width": 12,
                   "elements": [
                     {
-                      "id": media.fields[0].id
+                      "id": media.fields.find_by_name('Asset').id
                     }
                   ]
                 }
@@ -80,23 +79,23 @@ namespace :cortex do
                   "grid_width": 6,
                   "elements": [
                     {
-                      "id": media.fields[1].id
+                      "id": media.fields.find_by_name('Title').id
                     },
                     {
-                      "id": media.fields[2].id,
+                      "id": media.fields.find_by_name('Description').id,
                       "render_method": "multiline_input",
                       "display": {
                          "rows": 3
                       }
                     },
                     {
-                      "id": media.fields[3].id
+                      "id": media.fields.find_by_name('Tags').id
                     },
                     {
-                      "id": media.fields[4].id
+                      "id": media.fields.find_by_name('Expiration Date').id
                     },
                     {
-                      "id": media.fields[5].id
+                      "id": media.fields.find_by_name('Alt Tag').id
                     }
                   ]
                 },
@@ -167,7 +166,7 @@ namespace :cortex do
                 "cells": [
                   {
                     "field": {
-                      "id": media.fields[1].id
+                      "id": media.fields.find_by_name('Title').id
                     },
                     "display": {
                       "classes": [
@@ -178,7 +177,7 @@ namespace :cortex do
                   },
                   {
                     "field": {
-                      "id": media.fields[2].id
+                      "id": media.fields.find_by_name('Description').id
                     }
                   }
                 ]
@@ -188,7 +187,7 @@ namespace :cortex do
                 "cells": [
                   {
                     "field": {
-                      "id": media.fields[3].id
+                      "id": media.fields.find_by_name('Tags').id
                     },
                     "display": {
                       "classes": [
