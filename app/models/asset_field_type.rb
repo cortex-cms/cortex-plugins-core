@@ -14,6 +14,7 @@ class AssetFieldType < FieldType
   validates :asset, attachment_presence: true, if: :validate_presence?
   validate :validate_asset_size, if: :validate_size?
   validate :validate_asset_content_type, if: :validate_content_type?
+  validate :asset_extension, if: :existing_data?
 
   def metadata=(metadata_hash)
     @metadata = metadata_hash.deep_symbolize_keys
@@ -79,6 +80,12 @@ class AssetFieldType < FieldType
     existing_data['media_title'] || ContentItemService.form_fields[@metadata[:naming_data][:title]][:text].parameterize.underscore
   end
 
+  def asset_extension
+    unless existing_data['asset']['content_type'] == asset_content_type
+     errors.add(:asset, "Asset must be the same type of: #{existing_data['asset']['content_type']}")
+    end
+  end
+
   def mapping_field_name
     "#{field_name.parameterize('_')}_asset_file_name"
   end
@@ -96,6 +103,10 @@ class AssetFieldType < FieldType
   end
 
   alias_method :valid_presence_validation?, :validate_presence?
+
+  def existing_data?
+    existing_data.any?
+  end
 
   def validate_size?
     begin
