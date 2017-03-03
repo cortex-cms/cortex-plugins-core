@@ -36,7 +36,7 @@ class AssetFieldType < FieldType
         'file_size': asset_file_size,
         'updated_at': asset_updated_at
       },
-      'asset_title_slug': asset_title_slug,
+      'media_title': media_title,
       'asset_field_type_id': id
     }
   end
@@ -75,8 +75,8 @@ class AssetFieldType < FieldType
     end
   end
 
-  def asset_title_slug
-    @existing_data['asset_title_slug'] || ContentItemService.form_fields[@metadata[:naming_data]][:text].parameterize.underscore
+  def media_title
+    @existing_data['media_title'] || ContentItemService.form_fields[@metadata[:naming_data][:title]][:text].parameterize.underscore
   end
 
   def mapping_field_name
@@ -133,7 +133,7 @@ class AssetFieldType < FieldType
 
   def existing_metadata
     metadata.except!(:existing_data)
-    metadata[:path].gsub!(":asset_title_slug", asset_title_slug) if metadata[:path]
+    metadata[:path].gsub!(":media_title", media_title) if metadata[:path]
     metadata
   end
 end

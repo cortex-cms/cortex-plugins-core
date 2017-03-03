@@ -31,7 +31,9 @@ namespace :cortex do
                            },
                          metadata:
                            {
-                             naming_data: fieldTitle.id,
+                             naming_data: {
+                               title: fieldTitle.id
+                             },
                              styles: {
                                large: {geometry: '1800x1800>', format: :jpg},
                                medium: {geometry: '800x800>', format: :jpg},
@@ -42,7 +44,7 @@ namespace :cortex do
                              },
                              processors: [:thumbnail, :paperclip_optimizer],
                              preserve_files: true,
-                             path: ':class/:attachment/:asset_title_slug-:style.:extension',
+                             path: ':class/:attachment/:media_title-:style.:extension',
                              s3_headers: {'Cache-Control': 'public, max-age=315576000'}
                            })
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
