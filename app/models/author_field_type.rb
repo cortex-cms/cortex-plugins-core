@@ -1,17 +1,11 @@
-class AuthorFieldType < FieldType
-  include Devise::Controllers::Helpers
-
+class XAuthorFieldType < FieldType
   attr_accessor :author_name
   jsonb_accessor :data, author_name: :string
 
   validates :author_name, presence: true, if: :validate_presence?
 
   def data=(data_hash)
-    if data_hash.deep_symbolize_keys[:author_name].blank?
-      @author_name = current_user.fullname
-    else
-      @author_name = data_hash.deep_symbolize_keys[:author_name]
-    end
+    @author_name = data_hash.deep_symbolize_keys[:author_name]
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})

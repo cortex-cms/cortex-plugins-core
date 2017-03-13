@@ -20,6 +20,10 @@ module Plugins
       def render_input
         @options[:form].text_field 'data[author_name]', value: value, placeholder: @options[:placeholder], class: 'mdl-textfield__input', required: required?
       end
+
+      def render_hidden_value
+        @options[:form].hidden_field 'data[default_author_name]', value: current_user.fullname
+      end
     end
   end
 end
