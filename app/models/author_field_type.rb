@@ -1,10 +1,11 @@
-class XAuthorFieldType < FieldType
+class AuthorFieldType < FieldType
   attr_accessor :author_name
   jsonb_accessor :data, author_name: :string
 
   validates :author_name, presence: true, if: :validate_presence?
 
   def data=(data_hash)
+    data_hash[:author_name] = data_hash[:default_author_name] if data_hash.deep_symbolize_keys[:author_name].blank?
     @author_name = data_hash.deep_symbolize_keys[:author_name]
   end
 
