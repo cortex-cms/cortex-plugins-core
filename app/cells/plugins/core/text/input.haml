@@ -1,4 +1,5 @@
 .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
   = render_field_id
   = render_label
+  = render_tooltip unless @options[:tooltip].nil?
   = render_input

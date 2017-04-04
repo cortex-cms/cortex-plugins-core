@@ -2,5 +2,6 @@
 %label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect{ for: checkbox_id }
   = render_checkbox
   = render_checkbox_label
+  = render_tooltip unless @options[:tooltip].nil?
 
 %br
