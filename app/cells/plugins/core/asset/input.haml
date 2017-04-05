@@ -5,8 +5,8 @@
 = render_max_asset_size
 %br
 = render_field_id
+- if @options[:tooltip]
+  %p
+    = render_tooltip
 = render_label
 = render_input
-- if @options[:tooltip]
-  %br
-    = render_tooltip
