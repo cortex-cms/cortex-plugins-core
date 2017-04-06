@@ -66,7 +66,8 @@ namespace :cortex do
                   "grid_width": 12,
                   "elements": [
                     {
-                      "id": media.fields.find_by_name('Asset').id
+                      "id": media.fields.find_by_name('Asset').id,
+                      "tooltip": "Recommended blog featured image size: 1452px x 530px with a live area of 930px x 530px"
                     }
                   ]
                 }
