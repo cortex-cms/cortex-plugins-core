@@ -39,6 +39,10 @@ module Plugins
         @options[:form].file_field 'data[asset]'
       end
 
+      def render_tooltip
+        @options[:tooltip]
+      end
+
       def associated_content_item_thumb_url
         data['asset']['style_urls']['mini']
       end

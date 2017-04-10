@@ -1,5 +1,6 @@
-.mdl-textfield.mdl-js-textfield.authorfield
+.mdl-textfield.mdl-js-textfield.authorfield.mdl-textfield--floating-label
   = render_field_id
   = render_label
   = render_input
+  = render_tooltip unless @options[:tooltip].nil?
   = render_default_value
