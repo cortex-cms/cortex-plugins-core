@@ -155,7 +155,7 @@ namespace :cortex do
                 "name": "Creator",
                 "cells": [{
                             "field": {
-                              "method": "author_image"
+                              "method": "author_email"
                             },
                             "display": {
                               "classes": [
