@@ -19,19 +19,25 @@ class AssetFieldType < FieldType
   end
 
   def data
+    versions = asset.transform_values do |version|
+      {
+        filename: version.metadata['filename'],
+        extension: version.extension,
+        mime_type: version.mime_type,
+        url: version.url,
+        file_size: version.size,
+        dimensions: {
+          width: version.width,
+          height: version.height
+        }
+      }
+    end
+
     {
       asset: {
-        filename: asset.metadata['filename'],
-        original_filename: asset.original_filename,
-        extension: asset.extension,
-        mime_type: asset.mime_type,
-        url: asset.url,
-        file_size: asset.size,
+        original_filename: asset[:original].original_filename,
         #updated_at: asset.updated_at, # Does Shrine give this to us?
-        dimensions: {
-          width: asset.width,
-          height: asset.height
-        }
+        versions: versions
       },
       shrine_asset: asset.to_json
     }
@@ -39,12 +45,12 @@ class AssetFieldType < FieldType
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
     json = {}
-    json[mapping_field_name] = field_item.data['asset']['filename']
+    json[mapping_field_name] = field_item.data['asset']['original_filename']
     json
   end
 
   def mapping
-    {name: mapping_field_name, type: :string, analyzer: :keyword}
+    { name: mapping_field_name, type: :string, analyzer: :keyword }
   end
 
   private
