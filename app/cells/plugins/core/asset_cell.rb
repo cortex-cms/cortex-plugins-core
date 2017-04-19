@@ -19,6 +19,10 @@ module Plugins
         field.validations['allowed_extensions']&.join(', ')
       end
 
+      def allowed_asset_extensions_for_form
+        '.' + field.validations['allowed_extensions']&.join(',.')
+      end
+
       def render_max_asset_size
         number_to_human_size(field.validations['size']&.[]('less_than'))
       end
@@ -36,7 +40,7 @@ module Plugins
       end
 
       def render_input
-        @options[:form].file_field 'data[asset]'
+        @options[:form].file_field 'data[asset]', accept: allowed_asset_extensions_for_form
       end
 
       def render_tooltip

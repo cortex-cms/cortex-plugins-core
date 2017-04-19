@@ -6,21 +6,23 @@ class AssetFieldType < FieldType
 
   def metadata=(metadata_hash)
     @metadata = metadata_hash.deep_symbolize_keys
-    @existing_data = metadata_hash[:existing_data]
+    @existing_data = @metadata[:existing_data]
   end
 
   def data=(data_hash)
     attacher = ImageUploader::Attacher.new self, :asset
+    attacher.context[:metadata] = @metadata
     uploader = ImageUploader.new :cache
     asset_file = uploader.upload data_hash['asset']
 
     attacher.set asset_file
-    @asset = attacher.promote action: :store, metadata: @metadata
+    @asset = attacher.promote action: :store
   end
 
   def data
     versions = asset.transform_values do |version|
       {
+        id: version.id,
         filename: version.metadata['filename'],
         extension: version.extension,
         mime_type: version.mime_type,
