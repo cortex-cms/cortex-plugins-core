@@ -20,26 +20,11 @@ class AssetFieldType < FieldType
   end
 
   def data
-    versions = asset.transform_values do |version|
-      {
-        id: version.id,
-        filename: version.metadata['filename'],
-        extension: version.extension,
-        mime_type: version.mime_type,
-        url: version.url,
-        file_size: version.size,
-        dimensions: {
-          width: version.width,
-          height: version.height
-        }
-      }
-    end
-
     {
       asset: {
         original_filename: asset[:original].original_filename,
         #updated_at: asset.updated_at, # Does Shrine give this to us?
-        versions: versions
+        versions: versions_data
       },
       shrine_asset: asset.to_json
     }
@@ -69,5 +54,22 @@ class AssetFieldType < FieldType
 
   def mapping_field_name
     "#{field_name.parameterize('_')}_asset_file_name"
+  end
+
+  def versions_data
+    asset.transform_values do |version|
+      {
+        id: version.id,
+        filename: version.metadata['filename'],
+        extension: version.extension,
+        mime_type: version.mime_type,
+        url: version.url,
+        file_size: version.size,
+        dimensions: {
+          width: version.width,
+          height: version.height
+        }
+      }
+    end
   end
 end
