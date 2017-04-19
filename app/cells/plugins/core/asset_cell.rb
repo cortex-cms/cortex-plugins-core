@@ -48,6 +48,7 @@ module Plugins
       end
 
       def associated_content_item_thumb_url
+        # TODO: The thumb version needs to be configurable
         data['asset']['style_urls']['mini']
       end
 

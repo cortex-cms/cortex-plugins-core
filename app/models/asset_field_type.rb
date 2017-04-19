@@ -6,16 +6,12 @@ class AssetFieldType < FieldType
 
   def metadata=(metadata_hash)
     @metadata = metadata_hash.deep_symbolize_keys
-    @existing_data = @metadata[:existing_data]
+    @existing_data = metadata[:existing_data]
   end
 
   def data=(data_hash)
-    attacher = ImageUploader::Attacher.new self, :asset
-    attacher.context[:metadata] = @metadata
-    uploader = ImageUploader.new :cache
-    asset_file = uploader.upload data_hash['asset']
-
-    attacher.set asset_file
+    cached_file = cache_uploader.upload data_hash['asset']
+    attacher.set cached_file
     @asset = attacher.promote action: :store
   end
 
@@ -23,7 +19,7 @@ class AssetFieldType < FieldType
     {
       asset: {
         original_filename: asset[:original].original_filename,
-        #updated_at: asset.updated_at, # Does Shrine give this to us?
+        # TODO: updated_at: asset.updated_at, -- Does Shrine give this to us?
         versions: versions_data
       },
       shrine_asset: asset.to_json
@@ -57,7 +53,19 @@ class AssetFieldType < FieldType
   end
 
   def media_title
-    existing_data['media_title'] || ContentItemService.form_fields[@metadata[:naming_data][:title]][:text].parameterize.underscore
+    # TODO: Abstract this somehow
+    existing_data['media_title'] || ContentItemService.form_fields[metadata[:naming_data][:title]][:text].parameterize.underscore
+  end
+
+  def attacher
+    attacher = AssetUploader::Attacher.new self, :asset
+    attacher.context[:metadata] = metadata
+    attacher.context[:validations] = validations
+    attacher
+  end
+
+  def cache_uploader
+    AssetUploader.new :cache
   end
 
   def versions_data

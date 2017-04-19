@@ -1,6 +1,6 @@
 require 'image_processing/mini_magick'
 
-class ImageUploader < Shrine
+class AssetUploader < Shrine
   include ImageProcessing::MiniMagick
 
   plugin :determine_mime_type
@@ -20,5 +20,8 @@ class ImageUploader < Shrine
     thumb = resize_to_limit!(io.download, 200, 200)
     mini = resize_to_limit!(io.download, 100, 100)
     { original: io, thumb: thumb, mini: mini }
+
+    # Detect if image, then process versions
+    # Perform optimizations
   end
 end
