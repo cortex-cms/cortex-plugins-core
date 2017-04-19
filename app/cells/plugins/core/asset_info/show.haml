@@ -35,7 +35,7 @@
         %dd
           = link_to_asset
     .mdl-card__menu
-      .mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect#copy-asset-url{data: {'clipboard-text': asset['url']}}
+      .mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect#copy-asset-url{data: {'clipboard-text': asset['versions']['original']['url']}}
         %i.material-icons content_copy
       .mdl-tooltip{for: 'copy-asset-url'}
         Copy Asset URL
