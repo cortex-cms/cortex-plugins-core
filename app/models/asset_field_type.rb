@@ -56,6 +56,10 @@ class AssetFieldType < FieldType
     "#{field_name.parameterize('_')}_asset_file_name"
   end
 
+  def media_title
+    existing_data['media_title'] || ContentItemService.form_fields[@metadata[:naming_data][:title]][:text].parameterize.underscore
+  end
+
   def versions_data
     asset.transform_values do |version|
       {
