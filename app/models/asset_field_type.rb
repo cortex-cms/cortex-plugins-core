@@ -81,6 +81,10 @@ class AssetFieldType < FieldType
     AssetUploader.new :cache
   end
 
+  def host_alias
+    metadata[:storage][:host_alias] unless metadata[:storage][:host_alias].empty?
+  end
+
   def versions_data
     asset.transform_values do |version|
       {
@@ -88,7 +92,7 @@ class AssetFieldType < FieldType
         filename: version.metadata['filename'],
         extension: version.extension,
         mime_type: version.mime_type,
-        url: version.url,
+        url: version.url(public: true, host: host_alias),
         file_size: version.size,
         dimensions: {
           width: version.width,

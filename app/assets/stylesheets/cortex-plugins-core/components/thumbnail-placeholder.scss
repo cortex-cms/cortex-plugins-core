@@ -1,5 +1,5 @@
 .thumbnail-placeholder {
-  background-color: $jumbo-button-hover-background;
+  background-color: #E4E4E4; // TODO: determine how to inherit variables from Cortex. This should be $color-grey-evenlighter
   display: flex;
   height: 50px;
   width: 50px;

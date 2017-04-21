@@ -46,15 +46,16 @@ namespace :cortex do
                              path: ':class/:attachment/:media_title-:style.:extension',
                              storage: {
                                type: 's3',
+                               host_alias: ENV['HOST_ALIAS'],
                                config: {
                                  access_key_id: ENV['S3_ACCESS_KEY_ID'],
                                  secret_access_key: ENV['S3_SECRET_ACCESS_KEY'],
                                  region: ENV['S3_REGION'],
                                  bucket: ENV['S3_BUCKET_NAME'],
-                                 upload_options: {cache_control: 'public, max-age=315576000'}
-                                 #:url => ':s3_alias_url',
-                                 #:s3_host_alias => ENV['S3_HOST_ALIAS'],
-                                 #:s3_protocol => ENV['S3_PROTOCOL']
+                                 upload_options: {
+                                   acl: 'public-read',
+                                   cache_control: 'public, max-age=315576000'
+                                 }
                                }
                              }
                            })

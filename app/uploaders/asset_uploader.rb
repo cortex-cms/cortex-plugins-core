@@ -20,9 +20,11 @@ class AssetUploader < Shrine
     if image?(io)
       thumb = resize_to_limit!(io.download, 200, 200)
       mini = resize_to_limit!(io.download, 100, 100)
-      { original: io, thumb: thumb, mini: mini }
+      #convert!(image, format, page = nil, &block)
+      #resize_to_fit!(image, width, height)
 
-      # Perform optimizations
+      # TODO: Perform optimizations
+      { original: io, thumb: thumb, mini: mini }
     else
       { original: io }
     end
