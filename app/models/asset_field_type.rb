@@ -57,8 +57,21 @@ class AssetFieldType < FieldType
     existing_data['media_title'] || ContentItemService.form_fields[metadata[:naming_data][:title]][:text].parameterize.underscore
   end
 
+  def store
+    case metadata[:storage][:type]
+      when 's3'
+        Shrine::Storage::S3.new(metadata[:storage][:config])
+      when 'file_system'
+        Shrine::Storage::FileSystem.new(metadata[:storage][:config])
+      else
+        AssetUploader.storages[:store]
+    end
+  end
+
   def attacher
-    attacher = AssetUploader::Attacher.new self, :asset
+    AssetUploader.storages[:store_copy] = store # this may not be thread safe, but no other way to do this right now
+    AssetUploader.opts[:keep_files] = metadata[:keep_files] # this may not be thread safe, but no other way to do this right now
+    attacher = AssetUploader::Attacher.new self, :asset, store: :store_copy
     attacher.context[:metadata] = metadata
     attacher.context[:validations] = validations
     attacher

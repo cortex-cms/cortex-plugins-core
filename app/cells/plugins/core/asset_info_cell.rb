@@ -43,6 +43,14 @@ module Plugins
       def link_to_asset
         link_to asset['versions']['original']['url'], asset['versions']['original']['url'], target: '_blank'
       end
+
+      def asset_type
+        MimeMagic.new(asset['versions']['original']['mime_type']).mediatype
+      end
+
+      def asset_is_image?
+        asset_type == 'image'
+      end
     end
   end
 end

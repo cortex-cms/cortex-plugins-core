@@ -9,7 +9,7 @@ class AssetUploader < Shrine
   plugin :pretty_location
   plugin :processing
   plugin :versions
-  plugin :keep_files, destroyed: true
+  plugin :keep_files, destroyed: true, replaced: true
 
   Attacher.validate do
     validate_max_size 5.megabytes, message: 'is too large (max is 5 MB)'
@@ -17,11 +17,20 @@ class AssetUploader < Shrine
   end
 
   process(:store) do |io, context|
-    thumb = resize_to_limit!(io.download, 200, 200)
-    mini = resize_to_limit!(io.download, 100, 100)
-    { original: io, thumb: thumb, mini: mini }
+    if image?(io)
+      thumb = resize_to_limit!(io.download, 200, 200)
+      mini = resize_to_limit!(io.download, 100, 100)
+      { original: io, thumb: thumb, mini: mini }
 
-    # Detect if image, then process versions
-    # Perform optimizations
+      # Perform optimizations
+    else
+      { original: io }
+    end
+  end
+
+  private
+
+  def image?(io)
+    MimeMagic.new(io.data['metadata']['mime_type']).mediatype == 'image'
   end
 end

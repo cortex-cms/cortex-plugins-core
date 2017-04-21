@@ -34,7 +34,7 @@ namespace :cortex do
                              naming_data: {
                                title: fieldTitle.id
                              },
-                             styles: {
+                             versions: {
                                large: {geometry: '1800x1800>', format: :jpg},
                                medium: {geometry: '800x800>', format: :jpg},
                                default: {geometry: '300x300>', format: :jpg},
@@ -42,10 +42,21 @@ namespace :cortex do
                                micro: {geometry: '50x50>', format: :jpg},
                                post_tile: {geometry: '1140x', format: :jpg}
                              },
-                             processors: [:thumbnail, :paperclip_optimizer],
-                             preserve_files: true,
+                             keep_files: [:destroyed, :replaced],
                              path: ':class/:attachment/:media_title-:style.:extension',
-                             s3_headers: {'Cache-Control': 'public, max-age=315576000'}
+                             storage: {
+                               type: 's3',
+                               config: {
+                                 access_key_id: ENV['S3_ACCESS_KEY_ID'],
+                                 secret_access_key: ENV['S3_SECRET_ACCESS_KEY'],
+                                 region: ENV['S3_REGION'],
+                                 bucket: ENV['S3_BUCKET_NAME'],
+                                 upload_options: {cache_control: 'public, max-age=315576000'}
+                                 #:url => ':s3_alias_url',
+                                 #:s3_host_alias => ENV['S3_HOST_ALIAS'],
+                                 #:s3_protocol => ENV['S3_PROTOCOL']
+                               }
+                             }
                            })
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
         media.fields.new(name: 'Tags', field_type: 'tag_field_type')

@@ -4,10 +4,11 @@
       new Clipboard('#copy-asset-url');
     });
 
-  .asset-info.mdl-card.mdl-shadow--2dp
-    .mdl-card__title
-      %h2.mdl-card__title-text
-        = image_tag(asset['versions']['original']['url'], style: 'max-height: 200px;')
+  .asset-info.mdl-card
+    - if asset_is_image?
+      .mdl-card__title
+        %h2.mdl-card__title-text
+          = image_tag(asset['versions']['original']['url'], style: 'max-height: 200px;')
     .mdl-card__supporting-text
       %dl
         %dt Original Filename
@@ -16,12 +17,13 @@
         %dt Original File Type
         %dd
           = asset['versions']['original']['mime_type']
-        %dt File Size (Original Dimensions)
+        %dt Original File Size
         %dd
           = number_to_human_size(asset['versions']['original']['file_size'])
-        %dt Original Dimensions
-        %dd
-          = dimensions
+        - if asset_is_image?
+          %dt Original Dimensions
+          %dd
+            = dimensions
         %dt Creator
         %dd
           = creator.fullname

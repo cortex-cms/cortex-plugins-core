@@ -1,0 +1,12 @@
+.thumbnail-placeholder {
+  background-color: $jumbo-button-hover-background;
+  display: flex;
+  height: 50px;
+  width: 50px;
+
+  .h4 {
+    align-self: center;
+    text-align: center;
+    width: 100%;
+  }
+}
