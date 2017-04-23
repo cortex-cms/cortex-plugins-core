@@ -19,7 +19,7 @@ class AssetFieldType < FieldType
     {
       asset: {
         original_filename: asset[:original].original_filename,
-        # TODO: updated_at: asset.updated_at, -- Does Shrine give this to us?
+        # TODO: updated_at: asset.updated_at, -- Does Shrine give this to us? Potentially distinct from record's updated_at
         versions: versions_data
       },
       shrine_asset: asset.to_json
@@ -60,7 +60,7 @@ class AssetFieldType < FieldType
   def store
     case metadata[:storage][:type]
       when 's3'
-        Shrine::Storage::S3.new(metadata[:storage][:config])
+        Shrine::Storage::S3.new(metadata[:storage][:config]) # TODO: Encrypt credentials?
       when 'file_system'
         Shrine::Storage::FileSystem.new(metadata[:storage][:config])
       else

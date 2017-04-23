@@ -17,16 +17,14 @@ class AssetUploader < Shrine
   end
 
   process(:store) do |io, context|
-    if image?(io)
-      thumb = resize_to_limit!(io.download, 200, 200)
-      mini = resize_to_limit!(io.download, 100, 100)
-      #convert!(image, format, page = nil, &block)
-      #resize_to_fit!(image, width, height)
+    # TODO: Perform image optimizations, support versions without processors or formatters
+    versions = { original: io }
 
-      # TODO: Perform optimizations
-      { original: io, thumb: thumb, mini: mini }
-    else
-      { original: io }
+    if image?(io)
+      versions.merge(context[:metadata][:versions].transform_values do |version|
+        processed_version = send("#{version[:process][:method]}!", io.download, *version[:process][:config].values)
+        convert!(processed_version, version[:format])
+      end)
     end
   end
 

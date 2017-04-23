@@ -18,7 +18,7 @@ namespace :cortex do
         puts "Creating Fields..."
 
         allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
-        fieldTitle = media.fields.new(name: 'Title', field_type: 'text_field_type', validations: {presence: true, uniqueness: true})
+        fieldTitle = media.fields.new(name: 'Title', field_type: 'text_field_type', validations: { presence: true, uniqueness: true })
         fieldTitle.save
         media.fields.new(name: 'Asset', field_type: 'asset_field_type',
                          validations:
@@ -35,12 +35,11 @@ namespace :cortex do
                                title: fieldTitle.id
                              },
                              versions: {
-                               large: {geometry: '1800x1800>', format: :jpg},
-                               medium: {geometry: '800x800>', format: :jpg},
-                               default: {geometry: '300x300>', format: :jpg},
-                               mini: {geometry: '100x100>', format: :jpg},
-                               micro: {geometry: '50x50>', format: :jpg},
-                               post_tile: {geometry: '1140x', format: :jpg}
+                               large: { process: { method: 'resize_to_limit', config: { width: '1800', height: '1800' } }, format: :jpg },
+                               medium: { process: { method: 'resize_to_limit', config: { width: '800', height: '800' } }, format: :jpg },
+                               default: { process: { method: 'resize_to_limit', config: { width: '300', height: '300' } }, format: :jpg },
+                               mini: { process: { method: 'resize_to_limit', config: { width: '100', height: '100' } }, format: :jpg },
+                               micro: { process: { method: 'resize_to_limit', config: { width: '50', height: '50' } }, format: :jpg },
                              },
                              keep_files: [:destroyed, :replaced],
                              path: ':class/:attachment/:media_title-:style.:extension',
