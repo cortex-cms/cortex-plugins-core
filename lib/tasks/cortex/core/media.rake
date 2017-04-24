@@ -25,9 +25,7 @@ namespace :cortex do
                            {
                              presence: true,
                              allowed_extensions: allowed_asset_content_types,
-                             size: {
-                               less_than: 50.megabytes
-                             }
+                             max_size: 50.megabytes
                            },
                          metadata:
                            {

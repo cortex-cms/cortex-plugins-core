@@ -1,8 +1,15 @@
+require 'shrine/storage/s3'
+
 class AssetFieldType < FieldType
   attr_reader :asset,
               :existing_data
 
   attr_accessor :asset_data
+
+  before_save :promote
+
+  validate :asset_presence, if: :validate_presence?
+  validate :asset_errors
 
   def metadata=(metadata_hash)
     @metadata = metadata_hash.deep_symbolize_keys
@@ -10,12 +17,13 @@ class AssetFieldType < FieldType
   end
 
   def data=(data_hash)
-    cached_file = cache_uploader.upload data_hash['asset']
-    attacher.set cached_file
-    @asset = attacher.promote action: :store
+    attacher.assign data_hash['asset'].open if data_hash['asset']
+    @asset = attacher.get
   end
 
   def data
+    return {} if errors.any? || attacher.errors.any?
+
     {
       asset: {
         original_filename: asset[:original].original_filename,
@@ -42,14 +50,12 @@ class AssetFieldType < FieldType
     MimeMagic.new(asset.mime_type).mediatype == 'image'
   end
 
-  def allowed_content_types
-    validations[:allowed_extensions].collect do |allowed_content_type|
-      MimeMagic.by_extension(allowed_content_type).type
-    end
-  end
-
   def mapping_field_name
     "#{field_name.parameterize('_')}_asset_file_name"
+  end
+
+  def promote
+    @asset = attacher.promote action: :store unless asset.is_a?(Hash)
   end
 
   def media_title
@@ -69,16 +75,15 @@ class AssetFieldType < FieldType
   end
 
   def attacher
-    AssetUploader.storages[:store_copy] = store # this may not be thread safe, but no other way to do this right now
-    AssetUploader.opts[:keep_files] = metadata[:keep_files] # this may not be thread safe, but no other way to do this right now
-    attacher = AssetUploader::Attacher.new self, :asset, store: :store_copy
-    attacher.context[:metadata] = metadata
-    attacher.context[:validations] = validations
-    attacher
-  end
+    unless @attacher
+      AssetUploader.storages[:store_copy] = store # this may not be thread safe, but no other way to do this right now
+      AssetUploader.opts[:keep_files] = metadata[:keep_files] # this may not be thread safe, but no other way to do this right now
+      @attacher = AssetUploader::Attacher.new self, :asset, store: :store_copy
+      @attacher.context[:metadata] = metadata
+      @attacher.context[:validations] = validations
+    end
 
-  def cache_uploader
-    AssetUploader.new :cache
+    @attacher
   end
 
   def host_alias
@@ -99,6 +104,20 @@ class AssetFieldType < FieldType
           height: version.height
         }
       }
+    end
+  end
+
+  def validate_presence?
+    validations.key? :presence
+  end
+
+  def asset_presence
+    errors.add(:asset, 'must be present') unless asset
+  end
+
+  def asset_errors
+    attacher.errors.each do |message|
+      errors.add(:asset, message)
     end
   end
 end

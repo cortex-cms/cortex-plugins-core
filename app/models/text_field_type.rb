@@ -26,16 +26,13 @@ class TextFieldType < FieldType
     "#{field_name.parameterize('_')}_text"
   end
 
-  def text_present
-    errors.add(:text, 'must be present') if @text.empty?
-  end
-
   def text_length
     validator = LengthValidator.new(validations[:length].merge(attributes: [:text]))
     validator.validate_each(self, :text, text)
   end
 
   def text_unique
+    # TODO: This breaks when you try to update existing text
     unless metadata[:existing_data][:text] == text || field.field_items.jsonb_contains(:data, text: text).empty?
       errors.add(:text, "#{field.name} Must be unique")
     end
