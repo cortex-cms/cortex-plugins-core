@@ -7,7 +7,6 @@ class AssetUploader < Shrine
   plugin :store_dimensions
   plugin :validation_helpers
   plugin :cortex_validation_helpers
-  plugin :pretty_location
   plugin :processing
   plugin :versions
   plugin :keep_files, destroyed: true, replaced: true
@@ -36,6 +35,16 @@ class AssetUploader < Shrine
         convert!(processed_version, version[:format])
       end)
     end
+  end
+
+  def _generate_location(io, context)
+    # TODO: This is broken
+    attachment = :asset
+    media_title = ''
+    style = context[:version] || :original
+    name = super
+
+    ERB.new(context[:metadata][:path]).result # TODO: Shrine is overwriting metadata..
   end
 
   def image?(io)

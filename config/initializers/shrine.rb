@@ -7,4 +7,3 @@ Shrine.storages = {
 }
 
 Shrine.plugin :logging, logger: Rails.logger
-Shrine.plugin :cached_attachment_data

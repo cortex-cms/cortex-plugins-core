@@ -40,7 +40,7 @@ namespace :cortex do
                                micro: { process: { method: 'resize_to_limit', config: { width: '50', height: '50' } }, format: :jpg },
                              },
                              keep_files: [:destroyed, :replaced],
-                             path: ':class/:attachment/:media_title-:style.:extension',
+                             path: '<%= attachment %>/<%= media_title %>-<%= style %>',
                              storage: {
                                type: 's3',
                                host_alias: ENV['HOST_ALIAS'],
