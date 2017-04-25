@@ -30,11 +30,13 @@ class AssetUploader < Shrine
     versions = { original: io.download }
 
     if image?(io)
-      versions.merge(context[:config][:metadata][:versions].transform_values do |version|
+      versions.merge!(context[:config][:metadata][:versions].transform_values do |version|
         processed_version = send("#{version[:process][:method]}!", io.download, *version[:process][:config].values)
         convert!(processed_version, version[:format])
       end)
     end
+
+    versions
   end
 
   def generate_location(io, context)
