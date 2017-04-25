@@ -3,7 +3,7 @@ class Shrine
     module CortexValidationHelpers
       module AttacherMethods
         def validations
-          context[:validations]
+          context[:config][:validations]
         end
 
         def validate?(validation)

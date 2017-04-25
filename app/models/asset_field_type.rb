@@ -1,9 +1,7 @@
 require 'shrine/storage/s3'
 
 class AssetFieldType < FieldType
-  attr_reader :asset,
-              :existing_data
-
+  attr_reader :asset
   attr_accessor :asset_data
 
   before_save :promote
@@ -11,22 +9,16 @@ class AssetFieldType < FieldType
   validate :asset_presence, if: :validate_presence?
   validate :asset_errors
 
-  def metadata=(metadata_hash)
-    @metadata = metadata_hash.deep_symbolize_keys
-    @existing_data = metadata[:existing_data]
-  end
-
   def data=(data_hash)
-    attacher.assign data_hash['asset'].open if data_hash['asset']
+    assign data_hash['asset'] if data_hash['asset']
     @asset = attacher.get
   end
 
   def data
     return {} if errors.any? || attacher.errors.any?
-
     {
       asset: {
-        original_filename: asset[:original].original_filename,
+        original_filename: @original_filename,
         # TODO: updated_at: asset.updated_at, -- Does Shrine give this to us? Potentially distinct from record's updated_at
         versions: versions_data
       },
@@ -58,9 +50,15 @@ class AssetFieldType < FieldType
     @asset = attacher.promote action: :store unless asset.is_a?(Hash)
   end
 
-  def media_title
-    # TODO: Abstract this somehow
-    existing_data['media_title'] || ContentItemService.form_fields[metadata[:naming_data][:title]][:text].parameterize.underscore
+  def assign(attachment)
+    @original_filename = attachment.original_filename
+
+    attachment.open
+    begin
+      attacher.assign attachment
+    ensure
+      attachment.close
+    end
   end
 
   def store
@@ -79,8 +77,11 @@ class AssetFieldType < FieldType
       AssetUploader.storages[:store_copy] = store # this may not be thread safe, but no other way to do this right now
       AssetUploader.opts[:keep_files] = metadata[:keep_files] # this may not be thread safe, but no other way to do this right now
       @attacher = AssetUploader::Attacher.new self, :asset, store: :store_copy
-      @attacher.context[:metadata] = metadata
-      @attacher.context[:validations] = validations
+      @attacher.context[:config] = {
+        original_filename: @original_filename,
+        metadata: metadata,
+        validations: validations
+      }
     end
 
     @attacher

@@ -12,7 +12,6 @@ class AssetUploader < Shrine
   plugin :keep_files, destroyed: true, replaced: true
 
   Attacher.validate do
-    # TODO: DRY this via metaprogramming
     validate_mime_type_inclusion allowed_content_types if validate? :allowed_extensions
     validate_max_size validations[:max_size] if validate? :max_size
     validate_min_size validations[:min_size] if validate? :min_size
@@ -27,24 +26,25 @@ class AssetUploader < Shrine
 
   process(:store) do |io, context|
     # TODO: Perform image optimizations (build plugin), support versions without processors or formatters
+    context[:generated_hex] = SecureRandom.hex(8)
     versions = { original: io.download }
 
     if image?(io)
-      versions.merge(context[:metadata][:versions].transform_values do |version|
+      versions.merge(context[:config][:metadata][:versions].transform_values do |version|
         processed_version = send("#{version[:process][:method]}!", io.download, *version[:process][:config].values)
         convert!(processed_version, version[:format])
       end)
     end
   end
 
-  def _generate_location(io, context)
-    # TODO: This is broken
+  def generate_location(io, context)
     attachment = :asset
-    media_title = ''
     style = context[:version] || :original
-    name = super
+    original_name, _dot, original_extension = context[:config][:original_filename].rpartition('.')
+    generated_name, _dot, extension = super.rpartition('.')
+    generated_hex = context[:generated_hex]
 
-    ERB.new(context[:metadata][:path]).result # TODO: Shrine is overwriting metadata..
+    ERB.new(context[:config][:metadata][:path]).result(binding)
   end
 
   def image?(io)
