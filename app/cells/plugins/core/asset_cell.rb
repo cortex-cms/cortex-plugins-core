@@ -24,7 +24,7 @@ module Plugins
       end
 
       def render_max_asset_size
-        number_to_human_size(field.validations['size']&.[]('less_than'))
+        number_to_human_size(field.validations['max_size'])
       end
 
       def input_classes
@@ -49,7 +49,7 @@ module Plugins
 
       def associated_content_item_thumb_url
         # TODO: The thumb version needs to be configurable
-        data['asset']['style_urls']['mini']
+        data['asset']['versions']['mini']['url']
       end
 
       def render_associated_content_item_thumb
