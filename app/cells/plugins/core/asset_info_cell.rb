@@ -25,7 +25,7 @@ module Plugins
       end
 
       def dimensions
-        "#{asset['dimensions']['width']} x #{asset['dimensions']['width']}"
+        "#{asset['versions']['original']['dimensions']['width']} x #{asset['versions']['original']['dimensions']['width']}"
       end
 
       def creator
@@ -37,11 +37,19 @@ module Plugins
       end
 
       def updated_at
-        DateTime.parse(asset['updated_at']).to_formatted_s(:long_ordinal)
+        content_item.updated_at.to_formatted_s(:long_ordinal)
       end
 
       def link_to_asset
-        link_to asset['url'], asset['url'], target: '_blank'
+        link_to asset['versions']['original']['url'], asset['versions']['original']['url'], target: '_blank'
+      end
+
+      def asset_type
+        MimeMagic.new(asset['versions']['original']['mime_type']).mediatype
+      end
+
+      def asset_is_image?
+        asset_type == 'image'
       end
     end
   end
