@@ -1,0 +1,13 @@
+.thumbnail-placeholder {
+  background-color: $color-grey-evenlighter;
+  display: flex;
+  height: 50px;
+  width: 50px;
+
+  .h4 {
+    text-transform: uppercase;
+    align-self: center;
+    text-align: center;
+    width: 100%;
+  }
+}

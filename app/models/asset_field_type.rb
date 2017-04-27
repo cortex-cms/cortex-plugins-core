@@ -1,139 +1,124 @@
+require 'shrine/storage/s3'
+
 class AssetFieldType < FieldType
-  attr_accessor :asset_file_name,
-                :asset_content_type,
-                :asset_file_size,
-                :asset_updated_at,
-                :asset
+  attr_reader :asset
+  attr_accessor :asset_data
 
-  attr_reader :dimensions,
-              :existing_data
+  before_save :promote
 
-  before_save :extract_dimensions
-
-  do_not_validate_attachment_file_type :asset
-  validates :asset, attachment_presence: true, if: :validate_presence?
-  validate :validate_asset_size, if: :validate_size?
-  validate :validate_asset_content_type, if: :validate_content_type?
-
-  def metadata=(metadata_hash)
-    @metadata = metadata_hash.deep_symbolize_keys
-    @existing_data = metadata_hash[:existing_data]
-    Paperclip::HasAttachedFile.define_on(self.class, :asset, existing_metadata)
-  end
+  validate :asset_presence, if: :validate_presence?
+  validate :asset_errors
 
   def data=(data_hash)
-    self.asset = data_hash.deep_symbolize_keys[:asset]
+    assign data_hash['asset'] if data_hash['asset']
+    @asset = attacher.get
   end
 
   def data
+    return {} if errors.any? || attacher.errors.any?
     {
-      'asset': {
-        'file_name': asset_file_name,
-        'url': asset.url,
-        'style_urls': style_urls,
-        'dimensions': dimensions,
-        'content_type': asset_content_type,
-        'file_size': asset_file_size,
-        'updated_at': asset_updated_at
+      asset: {
+        original_filename: @original_filename,
+        # TODO: updated_at: asset.updated_at, -- Does Shrine give this to us? Potentially distinct from record's updated_at
+        versions: versions_data
       },
-      'media_title': media_title,
-      'asset_field_type_id': id
+      shrine_asset: asset.to_json
     }
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
     json = {}
-    json[mapping_field_name] = asset_file_name
+    json[mapping_field_name] = field_item.data['asset']['original_filename']
     json
   end
 
   def mapping
-    {name: mapping_field_name, type: :string, analyzer: :keyword}
+    { name: mapping_field_name, type: :string, analyzer: :keyword }
   end
 
   private
 
   def image?
-    asset_content_type =~ %r{^(image|(x-)?application)/(bmp|gif|jpeg|jpg|pjpeg|png|x-png)$}
-  end
-
-  def extract_dimensions
-    return unless image?
-    tempfile = asset.queued_for_write[:original]
-    unless tempfile.nil?
-      geometry = Paperclip::Geometry.from_file(tempfile)
-      @dimensions = {
-        width: geometry.width.to_i,
-        height: geometry.height.to_i
-      }
-    end
-  end
-
-  def allowed_content_types
-    validations[:allowed_extensions].collect do |allowed_content_type|
-      MimeMagic.by_extension(allowed_content_type).type
-    end
-  end
-
-  def media_title
-    existing_data['media_title'] || ContentItemService.form_fields[@metadata[:naming_data][:title]][:text].parameterize.underscore
+    MimeMagic.new(asset.mime_type).mediatype == 'image'
   end
 
   def mapping_field_name
     "#{field_name.parameterize('_')}_asset_file_name"
   end
 
+  def promote
+    @asset = attacher.promote action: :store unless asset.is_a?(Hash)
+  end
+
+  def assign(attachment)
+    @original_filename = attachment.original_filename
+
+    attachment.open
+    begin
+      attacher.assign attachment
+    ensure
+      attachment.close
+    end
+  end
+
+  def store
+    case metadata[:storage][:type]
+      when 's3'
+        Shrine::Storage::S3.new(metadata[:storage][:config]) # TODO: Encrypt credentials?
+      when 'file_system'
+        Shrine::Storage::FileSystem.new(metadata[:storage][:config])
+      else
+        AssetUploader.storages[:store]
+    end
+  end
+
+  def attacher
+    unless @attacher
+      AssetUploader.storages[:store_copy] = store # this may not be thread safe, but no other way to do this right now
+      AssetUploader.opts[:keep_files] = metadata[:keep_files] # this may not be thread safe, but no other way to do this right now
+      @attacher = AssetUploader::Attacher.new self, :asset, store: :store_copy
+      @attacher.context[:config] = {
+        original_filename: @original_filename,
+        metadata: metadata,
+        validations: validations
+      }
+    end
+
+    @attacher
+  end
+
+  def host_alias
+    metadata[:storage][:host_alias] unless metadata[:storage][:host_alias].empty?
+  end
+
+  def versions_data
+    asset.transform_values do |version|
+      {
+        id: version.id,
+        filename: version.metadata['filename'],
+        extension: version.extension,
+        mime_type: version.mime_type,
+        url: version.url(public: true, host: host_alias),
+        file_size: version.size,
+        dimensions: {
+          width: version.width,
+          height: version.height
+        }
+      }
+    end
+  end
+
   def validate_presence?
     validations.key? :presence
   end
 
-  def attachment_size_validator
-    AttachmentSizeValidator.new(validations[:size].merge(attributes: :asset))
+  def asset_presence
+    errors.add(:asset, 'must be present') unless asset
   end
 
-  def attachment_content_type_validator
-    AttachmentContentTypeValidator.new({content_type: allowed_content_types}.merge(attributes: :asset))
-  end
-
-  alias_method :valid_presence_validation?, :validate_presence?
-
-  def validate_size?
-    begin
-      attachment_size_validator
-      true
-    rescue ArgumentError, NoMethodError
-      false
+  def asset_errors
+    attacher.errors.each do |message|
+      errors.add(:asset, message)
     end
-  end
-
-  def validate_content_type?
-    begin
-      attachment_content_type_validator
-      true
-    rescue ArgumentError, NoMethodError
-      false
-    end
-  end
-
-  def validate_asset_size
-    attachment_size_validator.validate_each(self, :asset, asset)
-  end
-
-  def validate_asset_content_type
-    attachment_content_type_validator.validate_each(self, :asset, asset)
-  end
-
-  def style_urls
-    if existing_data.empty?
-      (metadata[:styles].map { |key, value| [key, asset.url(key)] }).to_h
-    else
-      existing_data.deep_symbolize_keys[:asset][:style_urls]
-    end
-  end
-
-  def existing_metadata
-    metadata.except!(:existing_data)
-    metadata[:path].gsub!(":media_title", media_title) if metadata[:path]
-    metadata
   end
 end

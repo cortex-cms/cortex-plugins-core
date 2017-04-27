@@ -1,2 +1,6 @@
-- if asset
-  = image_tag(asset['style_urls'][config[:thumbnail_style]], height: '50px')
+- if asset && asset['versions'][config[:thumbnail_style]]
+  = image_tag(asset['versions'][config[:thumbnail_style]]['url'], height: '50px')
+- else
+  .thumbnail-placeholder
+    .h4
+      = asset['versions']['original']['extension']
