@@ -40,7 +40,7 @@ class AssetUploader < Shrine
   end
 
   def generate_location(io, context)
-    attachment = :asset
+    attachment = :assets
     style = context[:version] || :original
     original_name, _dot, original_extension = context[:config][:original_filename].rpartition('.')
     generated_name, _dot, extension = super.rpartition('.')
