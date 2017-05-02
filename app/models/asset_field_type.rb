@@ -63,12 +63,12 @@ class AssetFieldType < FieldType
 
   def store
     case metadata[:storage][:type]
-      when 's3'
-        Shrine::Storage::S3.new(metadata[:storage][:config]) # TODO: Encrypt credentials?
-      when 'file_system'
-        Shrine::Storage::FileSystem.new(metadata[:storage][:config])
-      else
-        AssetUploader.storages[:store]
+    when 's3'
+      Shrine::Storage::S3.new(metadata[:storage][:config]) # TODO: Encrypt credentials?
+    when 'file_system'
+      Shrine::Storage::FileSystem.new('public', prefix: 'uploads/store')
+    else
+      AssetUploader.storages[:store]
     end
   end
 

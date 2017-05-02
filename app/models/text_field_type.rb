@@ -32,7 +32,7 @@ class TextFieldType < FieldType
   end
 
   def text_unique
-    # TODO: This breaks when you try to update existing text
+    binding.pry
     unless metadata[:existing_data][:text] == text || field.field_items.jsonb_contains(:data, text: text).empty?
       errors.add(:text, "#{field.name} Must be unique")
     end
