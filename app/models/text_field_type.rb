@@ -32,9 +32,8 @@ class TextFieldType < FieldType
   end
 
   def text_unique
-    binding.pry
-    unless metadata[:existing_data][:text] == text || field.field_items.jsonb_contains(:data, text: text).empty?
-      errors.add(:text, "#{field.name} Must be unique")
+    unless metadata[:existing_data][:text] == text || field.field_items.select { |field_item| field_item.id != metadata[:field_item].id }.jsonb_contains(:data, text: text).empty?
+      errors.add(:text, "Must be unique")
     end
   end
 
