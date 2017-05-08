@@ -22,7 +22,7 @@ class AuthorFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_author"
+    "#{field_name.parameterize(separator: '_')}_author"
   end
 
   def author_name_present

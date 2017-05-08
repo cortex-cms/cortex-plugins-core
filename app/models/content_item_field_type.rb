@@ -18,6 +18,6 @@ class ContentItemFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_content_item"
+    "#{field_name.parameterize(separator: '_')}_content_item"
   end
 end

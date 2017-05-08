@@ -43,7 +43,7 @@ class AssetFieldType < FieldType
   end
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_asset_file_name"
+    "#{field_name.parameterize(separator: '_')}_asset_file_name"
   end
 
   def promote

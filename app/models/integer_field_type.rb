@@ -23,7 +23,7 @@ class IntegerFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_integer"
+    "#{field_name.parameterize(separator: '_')}_integer"
   end
 
   def validate_key

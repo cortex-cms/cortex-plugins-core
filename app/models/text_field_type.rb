@@ -23,7 +23,7 @@ class TextFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_text"
+    "#{field_name.parameterize(separator: '_')}_text"
   end
 
   def text_length

@@ -32,7 +32,7 @@ class TreeFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_tree"
+    "#{field_name.parameterize(separator: '_')}_tree"
   end
 
   def minimum
