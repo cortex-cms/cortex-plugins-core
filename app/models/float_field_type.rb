@@ -23,7 +23,7 @@ class FloatFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_float"
+    "#{field_name.parameterize(separator: '_')}_float"
   end
 
   def validate_key(key)
