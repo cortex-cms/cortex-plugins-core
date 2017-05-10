@@ -21,7 +21,7 @@ class UserFieldType < FieldType
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_user"
+    "#{field_name.parameterize(separator: '_')}_user"
   end
 
   def valid_user_id?

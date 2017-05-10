@@ -16,13 +16,13 @@ class AuthorFieldType < FieldType
   end
 
   def mapping
-    {author_name: mapping_field_name, type: :string, analyzer: :snowball}
+    { name: mapping_field_name, type: :string, analyzer: :snowball }
   end
 
   private
 
   def mapping_field_name
-    "#{field_name.parameterize('_')}_author_name"
+    "#{field_name.parameterize(separator: '_')}_author"
   end
 
   def author_name_present

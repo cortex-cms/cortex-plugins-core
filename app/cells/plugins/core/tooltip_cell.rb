@@ -8,7 +8,7 @@ module Plugins
       private
 
       def tooltip_id
-        @options[:id].parameterize('_')
+        @options[:id].parameterize(separator: '_')
       end
     end
   end
