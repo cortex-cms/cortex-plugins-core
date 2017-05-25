@@ -76,7 +76,7 @@ namespace :cortex do
                   "elements": [
                     {
                       "id": media.fields.find_by_name('Asset').id,
-                      "tooltip": "Recommended blog featured image size: 1452px x 530px with a live area of 930px x 530px"
+                      "tooltip": "Recommended Size: 840 x 400 if you want to use a single image as your tile and blog header image."
                     }
                   ]
                 }
