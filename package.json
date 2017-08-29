@@ -10,10 +10,6 @@
   "keywords": ["cortex", "cms", "plugins", "core"],
   "author": "EmployerSiteContentProducts@cb.com",
   "license": "Apache-2.0",
-  "engines": {
-    "node": "7.4.0",
-    "npm": "4.1.1"
-  },
   "cacheDirectories": [
     "node_modules"
   ],
