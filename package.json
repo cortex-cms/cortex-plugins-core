@@ -1,6 +1,6 @@
 {
   "name": "cortex-plugins-core",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "main": "node_package/startup/registration.jsx",
   "homepage": "https://github.com/cortex-cms/cortex-plugins-core",
   "repository": {
