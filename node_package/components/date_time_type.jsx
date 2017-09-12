@@ -13,6 +13,7 @@ class DateTimeType extends React.PureComponent {
     const {
       field_item,
       id,
+      value = '',
       metadata,
       required = false,
       name,
