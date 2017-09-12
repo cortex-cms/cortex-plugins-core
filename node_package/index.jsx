@@ -1,7 +1,15 @@
-import Components from './components/index'
+import {
+  TextFieldType,
+  DateTimeType,
+  AssetFieldType,
+  TagFieldType
+} from './components'
 
 const CortexPlugin = {
-  Components
+  text_field_type: TextFieldType,
+  asset_field_type: AssetFieldType,
+  tag_field_type: TagFieldType,
+  date_time_field_type: DateTimeType
 }
 
-module.exports = CortexPlugin;
+export default CortexPlugin;

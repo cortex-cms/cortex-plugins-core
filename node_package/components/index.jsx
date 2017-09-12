@@ -1,7 +1,12 @@
 import React from 'react'
-
-const RandomComponent = () => <h1>HEY HEY</h1>
+import TextFieldType from './text_field_type'
+import DateTimeType from './date_time_type'
+import AssetFieldType from './asset_field_type'
+import TagFieldType from './tag_field_type'
 
 export {
-  RandomComponent
+  TextFieldType,
+  DateTimeType,
+  AssetFieldType,
+  TagFieldType
 }
