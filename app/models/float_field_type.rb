@@ -1,6 +1,6 @@
 class FloatFieldType < FieldType
   attr_accessor :float
- 
+
   validates :float, presence: true, if: Proc.new { |float| validate_key(:presence) }
   validates_numericality_of :float, unless: "float.nil?"
   validate :less_than, if: Proc.new { |float| validate_key(:max) }
@@ -27,14 +27,14 @@ class FloatFieldType < FieldType
   end
 
   def validate_key(key)
-    @validations.key? key
+    validations.key? key
   end
 
   def less_than
-     errors.add(:float, "must be less_than #{@validations[:max]}") if :float <= @validations[:max]
+     errors.add(:float, "must be less_than #{validations[:max]}") if :float <= validations[:max]
   end
 
   def greater_than
-     errors.add(:float, "must be greater_than #{@validations[:min]}") if :float >= @validations[:min]
+     errors.add(:float, "must be greater_than #{validations[:min]}") if :float >= validations[:min]
   end
 end

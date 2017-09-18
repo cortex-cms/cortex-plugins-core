@@ -36,7 +36,7 @@ class TreeFieldType < FieldType
   end
 
   def minimum
-    if !@values.nil? && @values[:values].length >= @validations[:minimum]
+    if !@values.nil? && @values[:values].length >= validations[:minimum]
       true
     else
       errors.add(:minimum, "You have selected too few values.")
@@ -46,7 +46,7 @@ class TreeFieldType < FieldType
 
   def maximum
     unless @values.nil?
-      if @values[:values].length <= @validations[:maximum]
+      if @values[:values].length <= validations[:maximum]
         true
       else
         errors.add(:maximum, "You have selected too many values.")
@@ -56,14 +56,14 @@ class TreeFieldType < FieldType
   end
 
   def validate_presence?
-    @validations.key? :presence
+    validations.key? :presence
   end
 
   def validate_minimum?
-    @validations.key? :minimum
+    validations.key? :minimum
   end
 
   def validate_maximum?
-    @validations.key? :maximum
+    validations.key? :maximum
   end
 end

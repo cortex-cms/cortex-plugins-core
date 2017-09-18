@@ -1,8 +1,4 @@
-require 'dry/transaction'
-
-class UpdateTagFieldItemTransaction
-  include Dry::Transaction
-
+class UpdateTagFieldItemTransaction < ApplicationTransaction
   step :process
 
   def process(field_item)
