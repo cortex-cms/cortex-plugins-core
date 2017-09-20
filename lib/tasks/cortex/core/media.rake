@@ -32,7 +32,7 @@ namespace :cortex do
                              naming_data: {
                                title: fieldTitle.id
                              },
-                             versions: {
+                             versions: { # Move to YAML
                                large: { process: { method: 'resize_to_limit', config: { width: '1800', height: '1800' } } },
                                medium: { process: { method: 'resize_to_limit', config: { width: '800', height: '800' } } },
                                default: { process: { method: 'resize_to_limit', config: { width: '300', height: '300' } } },
@@ -42,7 +42,7 @@ namespace :cortex do
                              },
                              keep_files: [:destroyed, :replaced],
                              path: 'media/<%= attachment %>/<%= original_name %>-<%= style %>-<%= generated_hex %>.<%= extension %>',
-                             storage: {
+                             storage: { # Move to YAML
                                type: 's3',
                                host_alias: ENV['HOST_ALIAS'],
                                config: {
@@ -55,6 +55,33 @@ namespace :cortex do
                                    cache_control: 'public, max-age=315576000'
                                  }
                                }
+                             },
+                             image_optim_config: {  # Move to YAML
+                               allow_lossy: true,
+                               jpegoptim: {
+                                 allow_lossy: true,
+                                 strip: 'all',
+                                 max_quality: 60
+                               },
+                               pngquant: {
+                                 allow_lossy: true,
+                                 quality_range: {
+                                   begin: 33,
+                                   end: 50
+                                 },
+                                 speed: 3
+                               },
+                               gifsicle: {
+                                 interlace: true
+                               },
+                               advpng: false,
+                               jhead: false,
+                               jpegrecompress: false,
+                               jpegtran: false,
+                               optipng: false,
+                               pngcrush: false,
+                               pngout: false,
+                               svgo: false
                              }
                            })
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
