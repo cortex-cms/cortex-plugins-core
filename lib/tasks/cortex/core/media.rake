@@ -33,11 +33,12 @@ namespace :cortex do
                                title: fieldTitle.id
                              },
                              versions: {
-                               large: { process: { method: 'resize_to_limit', config: { width: '1800', height: '1800' } }, format: :jpg },
-                               medium: { process: { method: 'resize_to_limit', config: { width: '800', height: '800' } }, format: :jpg },
-                               default: { process: { method: 'resize_to_limit', config: { width: '300', height: '300' } }, format: :jpg },
-                               mini: { process: { method: 'resize_to_limit', config: { width: '100', height: '100' } }, format: :jpg },
-                               micro: { process: { method: 'resize_to_limit', config: { width: '50', height: '50' } }, format: :jpg },
+                               large: { process: { method: 'resize_to_limit', config: { width: '1800', height: '1800' } } },
+                               medium: { process: { method: 'resize_to_limit', config: { width: '800', height: '800' } } },
+                               default: { process: { method: 'resize_to_limit', config: { width: '300', height: '300' } } },
+                               mini: { process: { method: 'resize_to_limit', config: { width: '100', height: '100' } } },
+                               micro: { process: { method: 'resize_to_limit', config: { width: '50', height: '50' } } },
+                               rss: { process: { method: 'resize_to_limit', config: { width: '840', height: '840' } } },
                              },
                              keep_files: [:destroyed, :replaced],
                              path: 'media/<%= attachment %>/<%= original_name %>-<%= style %>-<%= generated_hex %>.<%= extension %>',
