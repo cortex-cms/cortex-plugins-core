@@ -34,6 +34,6 @@ class UserFieldType < FieldType
   end
 
   def validate_presence?
-    @validations.key? :presence
+    validations.key? :presence
   end
 end

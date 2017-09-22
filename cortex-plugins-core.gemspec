@@ -21,12 +21,14 @@ Gem::Specification.new do |s|
   s.add_dependency "cells", "~> 4.1"
   s.add_dependency "cells-rails", "~> 0.0"
   s.add_dependency "cells-haml", "~> 0.0"
-  s.add_dependency "jsonb_accessor", "~> 1.0.0.beta"
+  s.add_dependency "jsonb_accessor", "~> 1.0"
 
   # AssetFieldType
-  s.add_dependency "shrine", "~> 2.6"
+  s.add_dependency "shrine", "~> 2.7"
   s.add_dependency "mimemagic", "~> 0.3"
   s.add_dependency "image_processing", "~> 0.4"
-  s.add_dependency "mini_magick", "~> 4.7"
+  s.add_dependency "mini_magick", "~> 4.8"
   s.add_dependency "fastimage", "~> 2.1"
+  s.add_dependency "image_optim", "~> 0.25"
+  s.add_dependency "image_optim_pack", "~> 0.5"
 end

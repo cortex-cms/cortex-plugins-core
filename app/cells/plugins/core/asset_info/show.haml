@@ -8,7 +8,7 @@
     - if asset_is_image?
       .mdl-card__title
         %h2.mdl-card__title-text
-          = image_tag(asset['versions']['original']['url'], style: 'max-height: 200px;')
+          = image_tag(asset['versions']['original']['url'], style: 'min-height: 50px; max-height: 200px;')
     .mdl-card__supporting-text
       %dl
         %dt Original Filename
