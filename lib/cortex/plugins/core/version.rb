@@ -1,7 +1,7 @@
 module Cortex
   module Plugins
     module Core
-      VERSION = '0.12.4'
+      VERSION = '1.0.0'
     end
   end
 end
