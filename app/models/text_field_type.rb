@@ -39,14 +39,14 @@ class TextFieldType < FieldType
   end
 
   def validate_uniqueness?
-    @validations.key? :uniqueness
+    validations.key? :uniqueness
   end
 
   def validate_presence?
-    @validations.key? :presence
+    validations.key? :presence
   end
 
   def validate_length?
-    @validations.key? :length
+    validations.key? :length
   end
 end

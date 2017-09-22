@@ -27,14 +27,14 @@ class IntegerFieldType < FieldType
   end
 
   def validate_key
-    @validations.key? key
+    validations.key? key
   end
 
   def less_than
-     errors.add(:integer, "must be less_than #{@validations[:max]}") if :integer <= @validations[:max]
+     errors.add(:integer, "must be less_than #{validations[:max]}") if :integer <= validations[:max]
   end
 
   def greater_than
-     errors.add(:integer, "must be greater_than #{@validations[:min]}") if :integer >= @validations[:min]
+     errors.add(:integer, "must be greater_than #{validations[:min]}") if :integer >= validations[:min]
   end
 end
