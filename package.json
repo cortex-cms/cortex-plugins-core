@@ -1,7 +1,7 @@
 {
   "name": "cortex-plugins-core",
-  "version": "0.11.0",
-  "main": "node_package/startup/registration.jsx",
+  "version": "0.14.4",
+  "main": "node_package/index.jsx",
   "homepage": "https://github.com/cortex-cms/cortex-plugins-core",
   "repository": {
     "type": "git",
@@ -10,10 +10,6 @@
   "keywords": ["cortex", "cms", "plugins", "core"],
   "author": "EmployerSiteContentProducts@cb.com",
   "license": "Apache-2.0",
-  "engines": {
-    "node": "7.4.0",
-    "npm": "4.1.1"
-  },
   "cacheDirectories": [
     "node_modules"
   ],
@@ -24,7 +20,7 @@
     "babel-polyfill": "*",
     "babel-preset-es2015": "*",
     "babel-preset-react": "*",
-    "babel-preset-stage-0": "*",
+    "babel-preset-stage-2": "*",
     "babel-runtime": "*",
     "es5-shim": "*",
     "expose-loader": "*",
