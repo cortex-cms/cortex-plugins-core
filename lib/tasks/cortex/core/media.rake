@@ -5,13 +5,16 @@ namespace :cortex do
     namespace :media do
       desc 'Seed Cortex Media ContentType and Fields'
       task seed: :environment do
+        example_tenant = Tenant.find_by_name('Example')
+
         puts "Creating Media ContentType..."
         media = ContentType.new({
                                   name: "Media",
                                   description: "Media for Cortex",
                                   icon: "collections",
-                                  creator_id: 1,
-                                  contract_id: 1
+                                  tenant: example_tenant,
+                                  creator: User.first,
+                                  contract: Contract.first # TODO: This is obviously bad. This whole file is bad.
                                 })
         media.save!
 
@@ -32,16 +35,17 @@ namespace :cortex do
                              naming_data: {
                                title: fieldTitle.id
                              },
-                             versions: {
-                               large: { process: { method: 'resize_to_limit', config: { width: '1800', height: '1800' } }, format: :jpg },
-                               medium: { process: { method: 'resize_to_limit', config: { width: '800', height: '800' } }, format: :jpg },
-                               default: { process: { method: 'resize_to_limit', config: { width: '300', height: '300' } }, format: :jpg },
-                               mini: { process: { method: 'resize_to_limit', config: { width: '100', height: '100' } }, format: :jpg },
-                               micro: { process: { method: 'resize_to_limit', config: { width: '50', height: '50' } }, format: :jpg },
+                             versions: { # Move to YAML
+                               large: { process: { method: 'resize_to_limit', config: { width: '1800', height: '1800' } } },
+                               medium: { process: { method: 'resize_to_limit', config: { width: '800', height: '800' } } },
+                               default: { process: { method: 'resize_to_limit', config: { width: '300', height: '300' } } },
+                               mini: { process: { method: 'resize_to_limit', config: { width: '100', height: '100' } } },
+                               micro: { process: { method: 'resize_to_limit', config: { width: '50', height: '50' } } },
+                               rss: { process: { method: 'resize_to_limit', config: { width: '840', height: '840' } } },
                              },
                              keep_files: [:destroyed, :replaced],
                              path: 'media/<%= attachment %>/<%= original_name %>-<%= style %>-<%= generated_hex %>.<%= extension %>',
-                             storage: {
+                             storage: { # Move to YAML
                                type: 's3',
                                host_alias: ENV['HOST_ALIAS'],
                                config: {
@@ -54,6 +58,33 @@ namespace :cortex do
                                    cache_control: 'public, max-age=315576000'
                                  }
                                }
+                             },
+                             image_optim_config: {  # Move to YAML
+                               allow_lossy: true,
+                               jpegoptim: {
+                                 allow_lossy: true,
+                                 strip: 'all',
+                                 max_quality: 60
+                               },
+                               pngquant: {
+                                 allow_lossy: true,
+                                 quality_range: {
+                                   begin: 33,
+                                   end: 50
+                                 },
+                                 speed: 3
+                               },
+                               gifsicle: {
+                                 interlace: true
+                               },
+                               advpng: false,
+                               jhead: false,
+                               jpegrecompress: false,
+                               jpegtran: false,
+                               optipng: false,
+                               pngcrush: false,
+                               pngout: false,
+                               svgo: false
                              }
                            })
         media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
@@ -130,13 +161,14 @@ namespace :cortex do
           ]
         }
 
-        media_wizard_decorator = Decorator.new(name: "Wizard", data: wizard_hash)
+        media_wizard_decorator = Decorator.new(name: "Wizard", data: wizard_hash, tenant: example_tenant)
         media_wizard_decorator.save!
 
         ContentableDecorator.create!({
                                       decorator_id: media_wizard_decorator.id,
                                       contentable_id: media.id,
-                                      contentable_type: 'ContentType'
+                                      contentable_type: 'ContentType',
+                                      tenant: example_tenant
                                     })
 
         puts "Creating Index Decorators..."
@@ -164,7 +196,7 @@ namespace :cortex do
                 "name": "Creator",
                 "cells": [{
                             "field": {
-                              "method": "author_email"
+                              "method": "creator.email"
                             },
                             "display": {
                               "classes": [
@@ -213,13 +245,14 @@ namespace :cortex do
             ]
         }
 
-        media_index_decorator = Decorator.new(name: "Index", data: index_hash)
+        media_index_decorator = Decorator.new(name: "Index", data: index_hash, tenant: example_tenant)
         media_index_decorator.save!
 
         ContentableDecorator.create!({
                                       decorator_id: media_index_decorator.id,
                                       contentable_id: media.id,
-                                      contentable_type: 'ContentType'
+                                      contentable_type: 'ContentType',
+                                      tenant: example_tenant
                                     })
       end
     end

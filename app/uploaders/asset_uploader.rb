@@ -1,7 +1,9 @@
 require 'image_processing/mini_magick'
+require 'image_optim'
 
 class AssetUploader < Shrine
   include ImageProcessing::MiniMagick
+  include Imageable
 
   plugin :determine_mime_type
   plugin :store_dimensions
@@ -25,14 +27,15 @@ class AssetUploader < Shrine
   end
 
   process(:store) do |io, context|
-    # TODO: Perform image optimizations (build plugin), support versions without processors or formatters
+    # TODO: support versions without processors
     context[:generated_hex] = SecureRandom.hex(8)
     versions = { original: io.download }
 
     if image?(io)
+      image_optim = image_optim_for(context[:config][:metadata][:image_optim_config])
       versions.merge!(context[:config][:metadata][:versions].transform_values do |version|
         processed_version = send("#{version[:process][:method]}!", io.download, *version[:process][:config].values)
-        convert!(processed_version, version[:format])
+        optimize_image!(processed_version, image_optim) # TODO: per-version image_optim_config
       end)
     end
 
@@ -47,9 +50,5 @@ class AssetUploader < Shrine
     generated_hex = context[:generated_hex]
 
     ERB.new(context[:config][:metadata][:path]).result(binding)
-  end
-
-  def image?(io)
-    MimeMagic.new(io.data['metadata']['mime_type']).mediatype == 'image'
   end
 end

@@ -88,7 +88,7 @@ class AssetFieldType < FieldType
   end
 
   def host_alias
-    metadata[:storage][:host_alias] unless metadata[:storage][:host_alias].empty?
+    metadata&.[](:storage)&.[](:host_alias)
   end
 
   def versions_data
