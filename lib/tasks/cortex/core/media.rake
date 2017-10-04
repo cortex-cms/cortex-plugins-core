@@ -5,13 +5,16 @@ namespace :cortex do
     namespace :media do
       desc 'Seed Cortex Media ContentType and Fields'
       task seed: :environment do
+        example_tenant = Tenant.find_by_name('Example')
+
         puts "Creating Media ContentType..."
         media = ContentType.new({
                                   name: "Media",
                                   description: "Media for Cortex",
                                   icon: "collections",
-                                  creator_id: 1,
-                                  contract_id: 1
+                                  tenant: example_tenant,
+                                  creator: User.first,
+                                  contract: Contract.first # TODO: This is obviously bad. This whole file is bad.
                                 })
         media.save!
 
@@ -158,13 +161,14 @@ namespace :cortex do
           ]
         }
 
-        media_wizard_decorator = Decorator.new(name: "Wizard", data: wizard_hash)
+        media_wizard_decorator = Decorator.new(name: "Wizard", data: wizard_hash, tenant: example_tenant)
         media_wizard_decorator.save!
 
         ContentableDecorator.create!({
                                       decorator_id: media_wizard_decorator.id,
                                       contentable_id: media.id,
-                                      contentable_type: 'ContentType'
+                                      contentable_type: 'ContentType',
+                                      tenant: example_tenant
                                     })
 
         puts "Creating Index Decorators..."
@@ -241,13 +245,14 @@ namespace :cortex do
             ]
         }
 
-        media_index_decorator = Decorator.new(name: "Index", data: index_hash)
+        media_index_decorator = Decorator.new(name: "Index", data: index_hash, tenant: example_tenant)
         media_index_decorator.save!
 
         ContentableDecorator.create!({
                                       decorator_id: media_index_decorator.id,
                                       contentable_id: media.id,
-                                      contentable_type: 'ContentType'
+                                      contentable_type: 'ContentType',
+                                      tenant: example_tenant
                                     })
       end
     end
