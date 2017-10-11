@@ -67,3 +67,4 @@ test/dummy/tmp/
 # build artifacts
 *.gem
 pkg/
+node_package/lib
