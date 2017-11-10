@@ -52,6 +52,7 @@ Gemfile.lock
 
 # React on Rails
 npm-debug.log*
+yarn-error.log
 node_modules
 
 # Generated js bundles
@@ -66,3 +67,4 @@ test/dummy/tmp/
 # build artifacts
 *.gem
 pkg/
+node_package/lib

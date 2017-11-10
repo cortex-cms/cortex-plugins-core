@@ -1,7 +1,7 @@
 {
   "name": "cortex-plugins-core",
-  "version": "0.14.4",
-  "main": "node_package/index.jsx",
+  "version": "2.0.1",
+  "main": "node_package/lib/index.js",
   "homepage": "https://github.com/cortex-cms/cortex-plugins-core",
   "repository": {
     "type": "git",
@@ -10,29 +10,34 @@
   "keywords": ["cortex", "cms", "plugins", "core"],
   "author": "EmployerSiteContentProducts@cb.com",
   "license": "Apache-2.0",
-  "cacheDirectories": [
-    "node_modules"
-  ],
-  "peerDependencies": {
-    "babel-cli": "*",
-    "babel-core": "*",
-    "babel-loader": "*",
-    "babel-polyfill": "*",
-    "babel-preset-es2015": "*",
-    "babel-preset-react": "*",
-    "babel-preset-stage-2": "*",
-    "babel-runtime": "*",
-    "es5-shim": "*",
-    "expose-loader": "*",
-    "imports-loader": "*",
-    "react": "*",
-    "react-dom": "*",
-    "react-on-rails": "*",
-    "react-redux": "*",
-    "redux": "*",
-    "webpack": "*"
+  "dependencies": {
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "underscore": "~> 1.8.3",
+    "moment": "~> 2.18.1",
+    "bootstrap-sass": "~> 3.3.7",
+    "jquery-ui-timepicker-addon": "~> 1.6.3",
+    "clipboard": "~> 1.7.1",
+    "material-ui": "next",
+    "axios": "^0.16.2"
+  },
+  "devDependencies": {
+    "@rails/webpacker": "^3.0.2",
+    "babel-preset-react": "^6.24.1",
+    "coffeescript": "1.12.7",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "files": [
-    "node_package"
-  ]
+    "node_package/lib"
+  ],
+  "scripts": {
+    "clean": "rm -rf node_package/lib",
+    "prepublish": "yarn run build",
+    "babel": "babel --out-dir node_package/lib node_package/src",
+    "build": "yarn run clean && yarn run babel",
+    "build-watch": "babel --watch --out-dir node_package/lib node_package/src",
+    "prerelease": "yarn run clean && yarn run build"
+  }
 }
