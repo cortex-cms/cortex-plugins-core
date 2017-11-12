@@ -4,6 +4,10 @@ class DateTimeFieldType < FieldType
   validates :timestamp, presence: true, if: :validate_presence?
   validate :timestamp_is_valid?, if: :validate_presence?
 
+  def elasticsearch_mapping
+    { name: mapping_field_name, type: :string, analyzer: :snowball }
+  end
+
   def data=(data_hash)
     @timestamp = data_hash.deep_symbolize_keys[:timestamp]
   end
@@ -12,10 +16,6 @@ class DateTimeFieldType < FieldType
     json = {}
     json[mapping_field_name] = field_item.data['timestamp']
     json
-  end
-
-  def mapping
-    {name: mapping_field_name, type: :string, analyzer: :snowball}
   end
 
   private

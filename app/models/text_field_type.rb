@@ -1,4 +1,6 @@
 class TextFieldType < FieldType
+  PRIMARY_DATA_KEY = 'text'.freeze
+
   attr_accessor :text
   jsonb_accessor :data, text: :string
 
@@ -6,18 +8,26 @@ class TextFieldType < FieldType
   validate :text_length, if: :validate_length?
   validate :text_unique, if: :validate_uniqueness?
 
+  def elasticsearch_mapping
+    { name: mapping_field_name, type: :string, analyzer: :snowball }
+  end
+
+  def graphql_value
+    text
+  end
+
+  def graphql_type
+    types.String
+  end
+
   def data=(data_hash)
-    @text = data_hash.deep_symbolize_keys[:text]
+    @text = data_hash[PRIMARY_DATA_KEY]
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
     json = {}
-    json[mapping_field_name] = field_item.data['text']
+    json[mapping_field_name] = field_item.data[PRIMARY_DATA_KEY]
     json
-  end
-
-  def mapping
-    {name: mapping_field_name, type: :string, analyzer: :snowball}
   end
 
   private
