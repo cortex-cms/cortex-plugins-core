@@ -1,6 +1,6 @@
 {
   "name": "cortex-plugins-core",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "main": "node_package/lib/index.js",
   "homepage": "https://github.com/cortex-cms/cortex-plugins-core",
   "repository": {
