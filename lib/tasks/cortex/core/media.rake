@@ -10,6 +10,7 @@ namespace :cortex do
         puts "Creating Media ContentType..."
         media = ContentType.new({
                                   name: "Media",
+                                  name_id: "media",
                                   description: "Media for Cortex",
                                   icon: "collections",
                                   tenant: example_tenant,
@@ -21,9 +22,9 @@ namespace :cortex do
         puts "Creating Fields..."
 
         allowed_asset_content_types = %w(txt css js pdf doc docx ppt pptx csv xls xlsx svg ico png jpg gif bmp)
-        fieldTitle = media.fields.new(name: 'Title', field_type: 'text_field_type', validations: { presence: true, uniqueness: true })
+        fieldTitle = media.fields.new(name: 'Title', name_id: 'title', field_type: 'text_field_type', validations: { presence: true, uniqueness: true })
         fieldTitle.save
-        media.fields.new(name: 'Asset', field_type: 'asset_field_type',
+        media.fields.new(name: 'Asset', name_id: 'asset', field_type: 'asset_field_type',
                          validations:
                            {
                              presence: true,
@@ -87,10 +88,10 @@ namespace :cortex do
                                svgo: false
                              }
                            })
-        media.fields.new(name: 'Description', field_type: 'text_field_type', validations: {presence: true})
-        media.fields.new(name: 'Tags', field_type: 'tag_field_type')
-        media.fields.new(name: 'Expiration Date', field_type: 'date_time_field_type')
-        media.fields.new(name: 'Alt Tag', field_type: 'text_field_type')
+        media.fields.new(name: 'Description', name_id: 'description', field_type: 'text_field_type', validations: {presence: true})
+        media.fields.new(name: 'Tags', name_id: 'tags', field_type: 'tag_field_type')
+        media.fields.new(name: 'Expiration Date', name_id: 'expiration_date', field_type: 'date_time_field_type')
+        media.fields.new(name: 'Alt Tag', name_id: 'alt_tag', field_type: 'text_field_type')
 
         media.save!
 
