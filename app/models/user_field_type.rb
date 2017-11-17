@@ -4,8 +4,12 @@ class UserFieldType < FieldType
   validates :user_id, presence: true, if: :validate_presence?
   validate :valid_user_id?
 
+  def elasticsearch_mapping
+    { name: mapping_field_name, type: :keyword, index: :not_analyzed }
+  end
+
   def data=(data_hash)
-    @user_id = data_hash.deep_symbolize_keys[:user_id]
+    @user_id = data_hash['user_id']
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
@@ -14,14 +18,10 @@ class UserFieldType < FieldType
     json
   end
 
-  def mapping
-    {name: mapping_field_name, type: :string, analyzer: :snowball}
-  end
-
   private
 
   def mapping_field_name
-    "#{field_name.parameterize(separator: '_')}_user"
+    "#{field_name.parameterize(separator: '_')}_user_id"
   end
 
   def valid_user_id?

@@ -16,8 +16,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE.md", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", ">= 4"
-  s.add_dependency "react_on_rails", "~> 8"
+  s.add_dependency "rails", ">= 5"
   s.add_dependency "cells", "~> 4.1"
   s.add_dependency "cells-rails", "~> 0.0"
   s.add_dependency "cells-haml", "~> 0.0"
@@ -25,6 +24,7 @@ Gem::Specification.new do |s|
 
   # AssetFieldType
   s.add_dependency "shrine", "~> 2.7"
+  s.add_dependency "aws-sdk-s3", "~> 1.5"
   s.add_dependency "mimemagic", "~> 0.3"
   s.add_dependency "image_processing", "~> 0.4"
   s.add_dependency "mini_magick", "~> 4.8"
