@@ -4,19 +4,19 @@ class AuthorFieldType < FieldType
 
   validates :author_name, presence: true, if: :validate_presence?
 
+  def elasticsearch_mapping
+    { name: mapping_field_name, type: :string, analyzer: :keyword }
+  end
+
   def data=(data_hash)
-    data_hash[:author_name] = data_hash[:default_author_name] if data_hash.deep_symbolize_keys[:author_name].blank?
-    @author_name = data_hash.deep_symbolize_keys[:author_name]
+    data_hash[:author_name] = data_hash[:default_author_name] if data_hash['author_name'].blank?
+    @author_name = data_hash['author_name']
   end
 
   def field_item_as_indexed_json_for_field_type(field_item, options = {})
     json = {}
     json[mapping_field_name] = field_item.data['author_name']
     json
-  end
-
-  def mapping
-    { name: mapping_field_name, type: :string, analyzer: :snowball }
   end
 
   private

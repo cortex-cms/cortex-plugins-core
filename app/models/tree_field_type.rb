@@ -5,12 +5,16 @@ class TreeFieldType < FieldType
   validate  :minimum, if: :validate_minimum?
   validate  :maximum, if: :validate_maximum?
 
+  def elasticsearch_mapping
+    { name: mapping_field_name, type: :string, analyzer: :snowball }
+  end
+
   def data
     @values
   end
 
   def data=(data_hash)
-    values = data_hash.deep_symbolize_keys[:values]
+    values = data_hash['values']
 
     if values.is_a?(Hash)
       @values = { values: values.keys }
@@ -23,10 +27,6 @@ class TreeFieldType < FieldType
     json = {}
     json[mapping_field_name] = field_item.data['values']
     json
-  end
-
-  def mapping
-    { name: mapping_field_name, type: :string, analyzer: :snowball }
   end
 
   private

@@ -9,6 +9,10 @@ class AssetFieldType < FieldType
   validate :asset_presence, if: :validate_presence?
   validate :asset_errors
 
+  def elasticsearch_mapping
+    { name: mapping_field_name, type: :string, analyzer: :keyword }
+  end
+
   def data=(data_hash)
     assign data_hash['asset'] if data_hash['asset']
     @asset = attacher.get
@@ -30,10 +34,6 @@ class AssetFieldType < FieldType
     json = {}
     json[mapping_field_name] = field_item.data['asset']['original_filename']
     json
-  end
-
-  def mapping
-    { name: mapping_field_name, type: :string, analyzer: :keyword }
   end
 
   private
