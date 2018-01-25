@@ -1,6 +1,6 @@
 require 'shrine/storage/s3'
 
-class AssetFieldType < FieldType
+class AssetFieldType < Cortex::FieldType
   attr_reader :asset
   attr_accessor :asset_data
 

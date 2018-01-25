@@ -1,6 +1,7 @@
 .gitignore
 .npmignore
 .editorconfig
+.github
 CHANGELOG.md
 Gemfile
 README.md

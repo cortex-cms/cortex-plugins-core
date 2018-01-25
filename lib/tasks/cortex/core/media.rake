@@ -3,19 +3,19 @@ Bundler.require(:default, Rails.env)
 namespace :cortex do
   namespace :core do
     namespace :media do
-      desc 'Seed Cortex Media ContentType and Fields'
+      desc 'Seed Cortex Media Cortex::ContentType and Fields'
       task seed: :environment do
-        example_tenant = Tenant.find_by_name('Example')
+        example_tenant = Cortex::Tenant.find_by_name('Example')
 
         puts "Creating Media ContentType..."
-        media = ContentType.new({
+        media = Cortex::ContentType.new({
                                   name: "Media",
                                   name_id: "media",
                                   description: "Media for Cortex",
                                   icon: "collections",
                                   tenant: example_tenant,
-                                  creator: User.first,
-                                  contract: Contract.first # TODO: This is obviously bad. This whole file is bad.
+                                  creator: Cortex::User.first,
+                                  contract: Cortex::Contract.first # TODO: This is obviously bad. This whole file is bad.
                                 })
         media.save!
 
@@ -162,13 +162,13 @@ namespace :cortex do
           ]
         }
 
-        media_wizard_decorator = Decorator.new(name: "Wizard", data: wizard_hash, tenant: example_tenant)
+        media_wizard_decorator = Cortex::Decorator.new(name: "Wizard", data: wizard_hash, tenant: example_tenant)
         media_wizard_decorator.save!
 
-        ContentableDecorator.create!({
+        Cortex::ContentableDecorator.create!({
                                       decorator_id: media_wizard_decorator.id,
                                       contentable_id: media.id,
-                                      contentable_type: 'ContentType',
+                                      contentable_type: 'Cortex::ContentType',
                                       tenant: example_tenant
                                     })
 
@@ -246,13 +246,13 @@ namespace :cortex do
             ]
         }
 
-        media_index_decorator = Decorator.new(name: "Index", data: index_hash, tenant: example_tenant)
+        media_index_decorator = Cortex::Decorator.new(name: "Index", data: index_hash, tenant: example_tenant)
         media_index_decorator.save!
 
-        ContentableDecorator.create!({
+        Cortex::ContentableDecorator.create!({
                                       decorator_id: media_index_decorator.id,
                                       contentable_id: media.id,
-                                      contentable_type: 'ContentType',
+                                      contentable_type: 'Cortex::ContentType',
                                       tenant: example_tenant
                                     })
       end

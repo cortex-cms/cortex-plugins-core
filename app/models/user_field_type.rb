@@ -1,4 +1,4 @@
-class UserFieldType < FieldType
+class UserFieldType < Cortex::FieldType
   attr_accessor :user_id
 
   validates :user_id, presence: true, if: :validate_presence?
