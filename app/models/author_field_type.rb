@@ -1,4 +1,4 @@
-class AuthorFieldType < FieldType
+class AuthorFieldType < Cortex::FieldType
   attr_accessor :author_name
   jsonb_accessor :data, author_name: :string
 

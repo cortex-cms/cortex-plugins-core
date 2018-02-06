@@ -1,4 +1,4 @@
-class TextFieldType < FieldType
+class TextFieldType < Cortex::FieldType
   PRIMARY_DATA_KEY = 'text'.freeze
 
   attr_accessor :text

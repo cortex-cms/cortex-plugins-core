@@ -1,4 +1,4 @@
-class DateTimeFieldType < FieldType
+class DateTimeFieldType < Cortex::FieldType
   attr_accessor :timestamp
 
   validates :timestamp, presence: true, if: :validate_presence?

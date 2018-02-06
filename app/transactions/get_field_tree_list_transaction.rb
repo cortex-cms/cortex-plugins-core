@@ -1,4 +1,4 @@
-class GetFieldTreeListTransaction < ApplicationTransaction
+class GetFieldTreeListTransaction < Cortex::ApplicationTransaction
   step :init
   step :process
 

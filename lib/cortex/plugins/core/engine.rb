@@ -5,8 +5,10 @@ module Cortex
   module Plugins
     module Core
       class Engine < ::Rails::Engine
-        initializer 'cortex-plugins-core.assets.precompile' do |app|
-          app.config.assets.precompile += %w(ckeditor/config.js)
+        isolate_namespace Cortex::Plugins::Core
+
+        initializer "cortex-plugins-core.precompile_manifest" do |app|
+          app.config.assets.precompile += %w(cortex_plugins_core_manifest)
         end
       end
     end

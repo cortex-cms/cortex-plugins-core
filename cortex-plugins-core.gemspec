@@ -1,20 +1,24 @@
-$:.push File.expand_path("../lib", __FILE__)
+$:.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
 require "cortex/plugins/core/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "cortex-plugins-core"
-  s.version     = Cortex::Plugins::Core::VERSION
-  s.authors     = ["CareerBuilder Employer Site & Content Products"]
-  s.email       = ["EmployerSiteContentProducts@cb.com"]
+  s.name = "cortex-plugins-core"
+  s.version = Cortex::Plugins::Core::VERSION
+  s.authors = ['CareerBuilder Employer Site & Content Products']
+  s.email = 'toastercup@gmail.com'
 
-  s.summary     = %q{The combined set of Core FieldTypes for the Cortex CMS platform}
-  s.homepage    = "https://github.com/cortex-cms/cortex-plugins-core"
-  s.license     = "Apache-2.0"
+  s.summary = %q{The combined set of Core FieldTypes for the Cortex CMS platform}
+  s.homepage = "https://github.com/cortex-cms/cortex-plugins-core"
+  s.license = "Apache-2.0"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "LICENSE.md", "Rakefile", "README.md"]
+  s.files = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
+  s.test_files = Dir["spec/**/*"]
+  s.require_paths = ["lib"]
 
   s.add_dependency "rails", ">= 5"
   s.add_dependency "cells", "~> 4.1"

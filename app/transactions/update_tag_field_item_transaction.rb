@@ -1,4 +1,4 @@
-class UpdateTagFieldItemTransaction < ApplicationTransaction
+class UpdateTagFieldItemTransaction < Cortex::ApplicationTransaction
   step :process
 
   def process(field_item)
