@@ -22,11 +22,12 @@ module Plugins
       def metadata_values
         values = [["-- Select an Option --", nil]]
 
-        @options[:metadata]["data"]["tree_array"].map do |value|
-          values << [value["node"]["name"], value["id"]]
-        end
-
-        values
+        # @options[:metadata]["data"]["tree_array"].map do |value|
+        #   values << [value["node"]["name"], value["id"]]
+        # end
+        #
+        # values
+        @options[:metadata].keys
       end
     end
   end
