@@ -2,7 +2,6 @@ module Plugins
   module Core
     class TreeCell < Plugins::Core::Cell
       def checkboxes
-        binding.pry
         render
       end
 

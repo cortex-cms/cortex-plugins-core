@@ -1,5 +1,5 @@
 = render_label
 = render_tooltip unless @options[:tooltip].nil?
--# - @options[:metadata]["data"]["tree_array"].each do |node|
--#   = render_field_id
--#   = cell(Plugins::Core::CheckboxCell, nil, form: @options[:form], node: node, data: data).(:checkbox)
+- @options[:metadata]['head'].each do |checkbox_key|
+  = @options[:form].hidden_field :field_id, value: checkbox_key
+  = cell(Plugins::Core::CheckboxCell, nil, form: @options[:form], node_key: checkbox_key, tree_fields: @options[:metadata]['tree_fields'], data: data).(:checkbox)
