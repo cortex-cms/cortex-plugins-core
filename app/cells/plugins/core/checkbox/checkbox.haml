@@ -2,8 +2,8 @@
   = @options[:form].check_box checkbox_input_value, { checked: value, class: 'mdl-checkbox__input', id: @options[:node_key] }, 1, nil
   = @options[:form].label :data, node['name'], class: 'mdl-checkbox__label'
 
-- if node['children'].any?
+- if @options[:tree_fields][@options[:node_key]]['children'].any?
   .nested-checkbox-group
-    - @options[:node]['children'].each do |checkbox_key|
-      = render_field_id
-      = cell(Plugins::Core::CheckboxCell, nil, form: @options[:form], node_key: checkbox_key, tree_fields: @options[:tree_fields], data: data).(:checkbox)
+    - @options[:tree_fields][@options[:node_key]]['children'].each do |checkbox_key|
+      = @options[:form].hidden_field :field_id, value: @options[:field_id]
+      = cell(Plugins::Core::CheckboxCell, nil, field_id: @options[:field_id], form: @options[:form], node_key: checkbox_key, tree_fields: @options[:tree_fields], data: @options[:data]).(:checkbox)
