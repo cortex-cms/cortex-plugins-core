@@ -1,6 +1,7 @@
 %label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect{ for: @options[:node_key] }
   = @options[:form].check_box checkbox_input_value, { checked: value, class: 'mdl-checkbox__input', id: @options[:node_key] }, 1, nil
   = @options[:form].label :data, node['name'], class: 'mdl-checkbox__label'
+  - binding.pry
 
 -# - if node["children"].any?
 -#   - @options[:node]["children"].each do |child|
