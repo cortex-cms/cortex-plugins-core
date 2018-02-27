@@ -22,15 +22,6 @@ module Plugins
       def node
         @node ||= @options[:tree_fields][@options[:node_key]]
       end
-
-      def child_identifier
-        @options[:node]['name']
-      end
-
-      def display_lineage
-        #@options[:child].to_s + " " + @options[:node]["node"]["name"]
-        @options[:node]['name']
-      end
     end
   end
 end
