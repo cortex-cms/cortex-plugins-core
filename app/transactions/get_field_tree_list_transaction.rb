@@ -11,11 +11,10 @@ class GetFieldTreeListTransaction < ApplicationTransaction
   def process(input)
     tree_array = input[:field].metadata['allowed_values']
 
-    if false
-      tree_values = input[:content_item].field_items.find {|field_item| field_item.field_id == input[:field].id}.data['values']
+    tree_values = input[:content_item].field_items.find {|field_item| field_item.field_id == input[:field].id}.data['values']
+    # This will break
+    tree_list = tree_values.map {|value| tree_array.find {|node| node['id'] == value.to_i}['node']['name']}.join(',')
 
-      tree_list = tree_values.map {|value| tree_array.find {|node| node['id'] == value.to_i}['node']['name']}.join(',')
-    end
-    Right([])
+    Right(tree_list)
   end
 end

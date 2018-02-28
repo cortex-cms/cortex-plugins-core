@@ -15,6 +15,14 @@ module Plugins
         end
       end
 
+      def checkbox_attributes
+        if @options[:tree_fields][@options[:node_key]]['children'].any?
+          { onclick: "TreeBranchClicked(#{ '"#nested_' + @options[:node_key] + '"' }, this)" }
+        else
+          {}
+        end
+      end
+
       def checkbox_input_value
         "data[values][#{@options[:node_key]}]"
       end
