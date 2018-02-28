@@ -11,20 +11,24 @@ module Plugins
         if @options[:data].blank?
           false
         else
-          @options[:data]["values"].include?(node_id) ? true : false
+          @options[:data]["values"].include?(@options[:node_key])
         end
       end
 
-      def node_id
-        @options[:node]['id'].to_s
+      def checkbox_attributes
+        if @options[:tree_fields][@options[:node_key]]['children'].any?
+          { onclick: "TreeBranchClicked(#{ '"#nested_' + @options[:node_key] + '"' }, this)" }
+        else
+          {}
+        end
       end
 
-      def child_identifier
-        @options[:child].to_s + " " + "->"
+      def checkbox_input_value
+        "data[values][#{@options[:node_key]}]"
       end
 
-      def display_lineage
-        @options[:child].to_s + " " + @options[:node]["node"]["name"]
+      def node
+        @node ||= @options[:tree_fields][@options[:node_key]]
       end
     end
   end

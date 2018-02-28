@@ -9,10 +9,12 @@ class GetFieldTreeListTransaction < Cortex::ApplicationTransaction
   end
 
   def process(input)
-    tree_array = input[:field].metadata['allowed_values']['data']['tree_array']
-    tree_values = input[:content_item].field_items.find {|field_item| field_item.field_id == input[:field].id}.data['values']
+    tree_array = input[:field].metadata['allowed_values']
 
+    tree_values = input[:content_item].field_items.find {|field_item| field_item.field_id == input[:field].id}.data['values']
+    # This will break
     tree_list = tree_values.map {|value| tree_array.find {|node| node['id'] == value.to_i}['node']['name']}.join(',')
+
     Right(tree_list)
   end
 end

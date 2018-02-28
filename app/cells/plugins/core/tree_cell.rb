@@ -15,6 +15,10 @@ module Plugins
         data&.[]('values') || @options[:default_value]
       end
 
+      def tree_fields
+        @tree_fields ||=  @options[:metadata]['tree_fields']
+      end
+
       def render_select
         @options[:form].select 'data[values]', metadata_values, {selected: value}
       end
@@ -22,8 +26,8 @@ module Plugins
       def metadata_values
         values = [["-- Select an Option --", nil]]
 
-        @options[:metadata]["data"]["tree_array"].map do |value|
-          values << [value["node"]["name"], value["id"]]
+        @options[:metadata]['data'].keys.map do |field_key|
+          values << [@options[:metadata]['data'][field_key]['name'], field_key]
         end
 
         values
