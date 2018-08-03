@@ -1,9 +1,11 @@
+require 'helpers/utility_helper'
+
 module Plugins
   module Core
     class AssetCell < Plugins::Core::Cell
       include ActionView::Helpers::NumberHelper
+      include Cortex::Cells::AssociationHelper
       include UtilityHelper
-      include Cells::AssociationHelper
 
       def input
         render

@@ -24,6 +24,7 @@
   "devDependencies": {
     "@rails/webpacker": "^3.0.2",
     "babel-preset-react": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "coffeescript": "1.12.7",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
