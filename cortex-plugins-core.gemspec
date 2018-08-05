@@ -27,12 +27,12 @@ Gem::Specification.new do |s|
   s.add_dependency "jsonb_accessor", "~> 1.0"
 
   # AssetFieldType
-  s.add_dependency "shrine", "~> 2.7"
-  s.add_dependency "aws-sdk-s3", "~> 1.5"
+  s.add_dependency "shrine", "~> 2.11"
+  s.add_dependency "aws-sdk-s3", "~> 1.17"
   s.add_dependency "mimemagic", "~> 0.3"
-  s.add_dependency "image_processing", "~> 0.4"
+  s.add_dependency "image_processing", "~> 1.6"
   s.add_dependency "mini_magick", "~> 4.8"
   s.add_dependency "fastimage", "~> 2.1"
-  s.add_dependency "image_optim", "~> 0.25"
+  s.add_dependency "image_optim", "~> 0.26"
   s.add_dependency "image_optim_pack", "~> 0.5"
 end
