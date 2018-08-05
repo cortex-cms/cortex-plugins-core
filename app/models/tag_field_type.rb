@@ -1,4 +1,4 @@
-class TagFieldType < FieldType
+class TagFieldType < Cortex::FieldType
   attr_accessor :tag_list
 
   validates :tag_list, presence: true, if: :validate_presence?

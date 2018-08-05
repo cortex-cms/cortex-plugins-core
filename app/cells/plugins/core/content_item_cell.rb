@@ -12,7 +12,7 @@ module Plugins
       end
 
       def associated_content_item
-        ContentItem.find_by_id(value)
+        Cortex::ContentItem.find_by_id(value)
       end
 
       def associated_primary_field

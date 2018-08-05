@@ -1,4 +1,4 @@
-class FloatFieldType < FieldType
+class FloatFieldType < Cortex::FieldType
   attr_accessor :float
 
   validates :float, presence: true, if: Proc.new { |float| validate_key(:presence) }

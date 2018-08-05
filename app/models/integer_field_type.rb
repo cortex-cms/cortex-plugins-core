@@ -1,4 +1,4 @@
-class IntegerFieldType < FieldType
+class IntegerFieldType < Cortex::FieldType
   attr_accessor :integer
 
   validates :integer, presence: true, if: Proc.new { |int| validate_key(:presence) }

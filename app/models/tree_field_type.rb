@@ -1,4 +1,4 @@
-class TreeFieldType < FieldType
+class TreeFieldType < Cortex::FieldType
   attr_accessor :values
 
   validates :values, presence: true, if: :validate_presence?

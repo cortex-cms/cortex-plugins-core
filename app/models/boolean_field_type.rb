@@ -1,4 +1,4 @@
-class BooleanFieldType < FieldType
+class BooleanFieldType < Cortex::FieldType
   attr_accessor :value
 
   def elasticsearch_mapping

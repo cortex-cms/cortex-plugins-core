@@ -1,4 +1,4 @@
-class ContentItemFieldType < FieldType
+class ContentItemFieldType < Cortex::FieldType
   attr_accessor :content_item_id
 
   def elasticsearch_mapping
