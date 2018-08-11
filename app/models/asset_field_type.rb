@@ -88,10 +88,11 @@ class AssetFieldType < Cortex::FieldType
   end
 
   def host_alias
-    metadata&.[](:storage)&.[](:host_alias)
+    metadata&.[](:storage)&.[](:host_alias).presence || nil
   end
 
   def versions_data
+    # TODO: Create Dry::Type for this object
     asset.transform_values do |version|
       {
         id: version.id,

@@ -1,5 +1,7 @@
 require 'jsonb_accessor'
 require 'react_on_rails'
+require 'mimemagic'
+require 'hashie'
 
 module Cortex
   module Plugins

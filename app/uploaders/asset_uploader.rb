@@ -34,7 +34,9 @@ class AssetUploader < Shrine
     if image?(io)
       image_optim = image_optim_for(context[:config][:metadata][:image_optim_config])
       versions.merge!(context[:config][:metadata][:versions].transform_values do |version|
-        processed_version = send("#{version[:process][:method]}!", io.download, *version[:process][:config].values)
+        processed_version = ImageProcessing::MiniMagick
+                              .source(io.download)
+                              .send("#{version[:process][:method]}!", *version[:process][:config].values)
         optimize_image!(processed_version, image_optim) # TODO: per-version image_optim_config
       end)
     end
